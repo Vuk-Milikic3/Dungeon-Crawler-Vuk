@@ -44,7 +44,7 @@ public class Game {
         String normalized = command.trim().toLowerCase();
         switch (normalized) {
             case "status":
-                return player.getStatusString();
+                return player.getPlayerStatus().toString();
             default:
                 return "Unbekannter Befehl";
         }

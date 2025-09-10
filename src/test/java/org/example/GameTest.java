@@ -20,6 +20,13 @@ public class GameTest {
         String result = game.processCommand("status");
         assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 0/8", result);
     }
+
+    @Test
+    void processCommand_unknown_returnsErrorMessage() {
+        Game game = new Game();
+        String result = game.processCommand("bar");
+        assertEquals("Unbekannter Befehl", result);
+    }
 }
 
 
