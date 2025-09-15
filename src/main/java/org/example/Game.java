@@ -1,19 +1,20 @@
 package org.example;
 
+import java.util.Scanner;
+
 public class Game {
-    public enum State {
-        GAME_START
-    }
+    private boolean isStarted = false;
+    private final Player player = new Player();
+    private final Scanner scanner = new Scanner(System.in);
 
-    private State state = State.GAME_START;
-
-    public State getState() {
-        return state;
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public void start() {
+        isStarted = true;
         showStartScreen();
-        System.out.print("Gib deinen ersten Befehl ein: ");
+        awaitFirstCommand();
     }
 
     private void showStartScreen() {
@@ -37,5 +38,37 @@ public class Game {
         System.out.println("Besiege den General, der den Krieg begann.");
         System.out.println("Kehre zurück nach Kagemura – als Held deines Volkes.");
         System.out.println();
+    }
+
+    public String processCommand(String command) {
+        if (command == null) {
+            return "";
+        }
+        String normalized = command.trim().toLowerCase();
+        switch (normalized) {
+            case "status":
+                return player.getPlayerStatus().toString();
+            default:
+                return "Unbekannter Befehl";
+        }
+    }
+
+    private void awaitFirstCommand() {
+        while (true) {
+            System.out.print("Gib deinen ersten Befehl ein (Tipp: 'status'): ");
+            String input = "";
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine();
+            }
+            String response = processCommand(input);
+            if ("Unbekannter Befehl".equals(response)) {
+                System.out.println("Falscher Befehl eingegeben. Bitte gib einen gültigen Befehl ein.");
+                continue;
+            }
+            if (!response.isEmpty()) {
+                System.out.println(response);
+            }
+            break;
+        }
     }
 }
