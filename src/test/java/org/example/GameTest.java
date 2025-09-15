@@ -11,7 +11,7 @@ public class GameTest {
     void start_keepsStartState_andReturnsWithoutError() {
         Game game = new Game();
         game.start();
-        assertTrue(game.getState());
+        assertTrue(game.isStarted());
     }
 
     @Test

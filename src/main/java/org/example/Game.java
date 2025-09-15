@@ -3,15 +3,18 @@ package org.example;
 import java.util.Scanner;
 
 public class Game {
-    private boolean state = true;
+    private boolean isStarted = false;
     private final Player player = new Player();
+    private final Scanner scanner = new Scanner(System.in);
 
-    public boolean getState() {
-        return state;
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public void start() {
+        isStarted = true;
         showStartScreen();
+        awaitFirstCommand();
     }
 
     private void showStartScreen() {
@@ -50,9 +53,7 @@ public class Game {
         }
     }
 
-    @SuppressWarnings("resource")
-    public void awaitFirstCommand() {
-        Scanner scanner = new Scanner(System.in);
+    private void awaitFirstCommand() {
         while (true) {
             System.out.print("Gib deinen ersten Befehl ein (Tipp: 'status'): ");
             String input = "";

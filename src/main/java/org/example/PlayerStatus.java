@@ -15,26 +15,6 @@ public class PlayerStatus {
         this.inventoryCapacity = inventoryCapacity;
     }
 
-    public int getCurrentHp() {
-        return currentHp;
-    }
-
-    public int getMaxHp() {
-        return maxHp;
-    }
-
-    public int getChakra() {
-        return chakra;
-    }
-
-    public int getInventoryUsed() {
-        return inventoryUsed;
-    }
-
-    public int getInventoryCapacity() {
-        return inventoryCapacity;
-    }
-
     @Override
     public String toString() {
         return String.format(

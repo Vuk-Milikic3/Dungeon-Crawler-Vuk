@@ -1,48 +1,14 @@
 package org.example;
 
 public class Player {
-    private int currentHp;
-    private int maxHp;
-    private int chakra;
-    private int inventoryUsed;
-    private final int inventoryCapacity;
+    private final PlayerStatus status;
 
     public Player() {
-        this.maxHp = 100;
-        this.currentHp = 100;
-        this.chakra = 10;
-        this.inventoryCapacity = 8;
-        this.inventoryUsed = 0;
-    }
-
-    public int getCurrentHp() {
-        return currentHp;
-    }
-
-    public int getMaxHp() {
-        return maxHp;
-    }
-
-    public int getChakra() {
-        return chakra;
-    }
-
-    public int getInventoryUsed() {
-        return inventoryUsed;
-    }
-
-    public int getInventoryCapacity() {
-        return inventoryCapacity;
+        this.status = new PlayerStatus(100, 100, 10, 0, 8);
     }
 
     public PlayerStatus getStatus() {
-        return new PlayerStatus(
-                getCurrentHp(),
-                getMaxHp(),
-                getChakra(),
-                getInventoryUsed(),
-                getInventoryCapacity()
-        );
+        return status;
     }
 
     public PlayerStatus getPlayerStatus() {
