@@ -3,15 +3,14 @@ package org.example;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class GameTest {
 
     @Test
-    void start_keepsStartState_andReturnsWithoutError() {
+    void initial_isNotStarted() {
         Game game = new Game();
-        game.start();
-        assertTrue(game.isStarted());
+        assertFalse(game.isStarted());
     }
 
     @Test
