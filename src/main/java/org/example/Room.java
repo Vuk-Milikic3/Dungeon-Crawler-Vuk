@@ -13,7 +13,7 @@ public class Room {
         this.beschreibung = beschreibung;
     }
 
-    public void connect(RoomConnections.Direction direction, Room target) {
+    public void connect(Direction direction, Room target) {
         exits.put(direction.label(), target);
     }
 

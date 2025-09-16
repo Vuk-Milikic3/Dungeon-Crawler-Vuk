@@ -13,16 +13,16 @@ public class RoomTest {
 
     private static Stream<Arguments> directions() {
         return Stream.of(
-                Arguments.of(RoomConnections.Direction.NORTH, "norden"),
-                Arguments.of(RoomConnections.Direction.SOUTH, "süden"),
-                Arguments.of(RoomConnections.Direction.EAST, "osten"),
-                Arguments.of(RoomConnections.Direction.WEST, "westen")
+                Arguments.of(Direction.NORTH, "norden"),
+                Arguments.of(Direction.SOUTH, "süden"),
+                Arguments.of(Direction.EAST, "osten"),
+                Arguments.of(Direction.WEST, "westen")
         );
     }
 
     @ParameterizedTest
     @MethodSource("directions")
-    void connect_usesDirectionLabelInOutput(RoomConnections.Direction direction, String expectedLabel) {
+    void connect_usesDirectionLabelInOutput(Direction direction, String expectedLabel) {
         Room a = new Room("A", "");
         Room b = new Room("B", "");
         a.connect(direction, b);
@@ -33,11 +33,19 @@ public class RoomTest {
     }
 
     @Test
-    void roomConnections_startRoomHasNorthExit() {
-        RoomConnections world = new RoomConnections();
-        String out = world.getStartRoom().toString().toLowerCase();
-        assertTrue(out.contains("ausgänge:"));
-        assertTrue(out.contains("norden"));
+    void room_connectNorth_updatesOutput() {
+        Room a = new Room("A", "");
+
+        String outBefore = a.toString().toLowerCase();
+        assertTrue(outBefore.contains("ausgänge:"));
+        assertTrue(outBefore.contains("ausgänge: keine"));
+
+        Room b = new Room("B", "");
+        a.connect(Direction.NORTH, b);
+
+        String outAfter = a.toString().toLowerCase();
+        assertTrue(outAfter.contains("ausgänge:"));
+        assertTrue(outAfter.contains("norden"));
     }
 }
 
