@@ -2,8 +2,7 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
@@ -25,6 +24,19 @@ public class GameTest {
         Game game = new Game();
         String result = game.processCommand("bar");
         assertEquals("Unbekannter Befehl", result);
+    }
+
+    @Test
+    void processCommand_schauen_showsRoomNameAndExits() {
+        Game game = new Game();
+        String out = game.processCommand("schauen");
+        boolean hasName = out.contains("Raum: Kerker");
+        String lower = out.toLowerCase();
+        boolean hasExit = lower.contains("ausgänge:");
+        boolean hasExitLabel =
+                lower.contains("norden") || lower.contains("süden") ||
+                lower.contains("osten") || lower.contains("westen");
+        assertTrue(hasName && hasExit && hasExitLabel);
     }
 }
 
