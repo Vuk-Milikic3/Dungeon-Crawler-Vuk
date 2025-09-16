@@ -13,8 +13,7 @@ public class RoomConnections {
             this.label = label;
         }
 
-        @Override
-        public String toString() {
+        public String label() {
             return label;
         }
     }
@@ -27,11 +26,11 @@ public class RoomConnections {
         waffenkammer = new Room("Waffenkammer", "Regale voller alter Waffen, einige noch benutzbar.");
         bibliothek = new Room("Bibliothek", "Staubige Regale mit uralten Schriftrollen und Büchern.");
 
-        kerker.connect(Direction.NORTH.toString(), waffenkammer);
-        waffenkammer.connect(Direction.SOUTH.toString(), kerker);
+        kerker.connect(Direction.NORTH, waffenkammer);
+        waffenkammer.connect(Direction.SOUTH, kerker);
 
-        waffenkammer.connect(Direction.EAST.toString(), bibliothek);
-        bibliothek.connect(Direction.WEST.toString(), waffenkammer);
+        waffenkammer.connect(Direction.EAST, bibliothek);
+        bibliothek.connect(Direction.WEST, waffenkammer);
 
     }
 

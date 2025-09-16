@@ -6,15 +6,15 @@ import java.util.Map;
 public class Room {
     private final String name;
     private final String beschreibung;
-    private final Map<String, Room> exits = new LinkedHashMap<>(); // why not HashMap and whats the difference? Wie ich verstanden habe machht LinkedHashMap alles in der liste der Reihe nach & HashMap macht es zufällig. Hier benutze ich LinkedHashMap weil ich die Reihenfolge der Ausgänge will.
+    private final Map<String, Room> exits = new LinkedHashMap<>();
 
     public Room(String name, String beschreibung) {
         this.name = name;
         this.beschreibung = beschreibung;
     }
 
-    public void connect(String direction, Room target) {
-        exits.put(direction, target);
+    public void connect(RoomConnections.Direction direction, Room target) {
+        exits.put(direction.label(), target);
     }
 
     @Override
