@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 public class Game {
     private boolean isStarted = false;
-    private final Player player = new Player();
     private final Scanner scanner = new Scanner(System.in);
+    private final RoomConnections world = new RoomConnections();
+    private final Player player = new Player(world.getStartRoom());
 
     public boolean isStarted() {
         return isStarted;
@@ -45,17 +46,20 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
-        switch (normalized) {
-            case "status":
-                return player.getPlayerStatus().toString();
-            default:
-                return "Unbekannter Befehl";
-        }
+        return switch (normalized) {
+            case "status" -> player.getPlayerStatus().toString();
+            case "schauen" -> player.getCurrentRoomDescription();
+            case "quit" -> {
+                isStarted = false;
+                yield "Spiel beendet. Auf Wiedersehen!";
+            }
+            default -> "Unbekannter Befehl";
+        };
     }
 
     private void awaitFirstCommand() {
-        while (true) {
-            System.out.print("Gib deinen ersten Befehl ein (Tipp: 'status'): ");
+        while (isStarted) {
+            System.out.print("Gib deinen ersten Befehl ein (Tipp: 'status' oder 'schauen'): ");
             String input = "";
             if (scanner.hasNextLine()) {
                 input = scanner.nextLine();
@@ -63,12 +67,9 @@ public class Game {
             String response = processCommand(input);
             if ("Unbekannter Befehl".equals(response)) {
                 System.out.println("Falscher Befehl eingegeben. Bitte gib einen gültigen Befehl ein.");
-                continue;
-            }
-            if (!response.isEmpty()) {
+            } else if (!response.isEmpty()) {
                 System.out.println(response);
             }
-            break;
         }
     }
 }
