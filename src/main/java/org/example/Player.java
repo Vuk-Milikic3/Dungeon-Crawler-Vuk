@@ -2,12 +2,7 @@ package org.example;
 
 public class Player {
     private final PlayerStatus status;
-    private final Room currentRoom;
-
-    public Player() {
-        this.status = new PlayerStatus(100, 100, 10, 0, 8);
-        this.currentRoom = null;
-    }
+    private Room currentRoom;
 
     public Player(Room startRoom) {
         this.status = new PlayerStatus(100, 100, 10, 0, 8);
@@ -24,6 +19,18 @@ public class Player {
 
     public String getCurrentRoomDescription() {
         return currentRoom == null ? "" : currentRoom.toString();
+    }
+
+    public String move(Direction direction) {
+        if (currentRoom == null) {
+            return "";
+        }
+        Room nextRoom = currentRoom.getNextRoom(direction);
+        if (nextRoom == null) {
+            return "Dort ist eine Wand.";
+        }
+        currentRoom = nextRoom;
+        return currentRoom.toString();
     }
 }
 
