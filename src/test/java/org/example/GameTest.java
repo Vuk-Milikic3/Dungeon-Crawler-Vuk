@@ -1,6 +1,11 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +42,26 @@ public class GameTest {
                 lower.contains("norden") || lower.contains("süden") ||
                 lower.contains("osten") || lower.contains("westen");
         assertTrue(hasName && hasExit && hasExitLabel);
+    }
+
+    private static Stream<Arguments> movementCases() {
+        return Stream.of(
+                Arguments.of("", "w", "Raum: Waffenkammer"),
+                Arguments.of("", "a", "Dort ist eine Wand."),
+                Arguments.of("", "s", "Dort ist eine Wand."),
+                Arguments.of("w", "d", "Raum: Bibliothek")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("movementCases")
+    void processCommand_wasd_parameterized(String pre, String cmd, String expectedContains) {
+        Game game = new Game();
+        for (char c : pre.toCharArray()) {
+            game.processCommand(String.valueOf(c));
+        }
+        String out = game.processCommand(cmd);
+        assertTrue(out.contains(expectedContains));
     }
 }
 
