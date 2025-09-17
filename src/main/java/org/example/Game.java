@@ -49,6 +49,10 @@ public class Game {
         return switch (normalized) {
             case "status" -> player.getPlayerStatus().toString();
             case "schauen" -> player.getCurrentRoomDescription();
+            case "w" -> player.move(Direction.NORTH);
+            case "a" -> player.move(Direction.WEST);
+            case "s" -> player.move(Direction.SOUTH);
+            case "d" -> player.move(Direction.EAST);
             case "quit" -> {
                 isStarted = false;
                 yield "Spiel beendet. Auf Wiedersehen!";
@@ -68,7 +72,7 @@ public class Game {
             if ("Unbekannter Befehl".equals(response)) {
                 System.out.println("Falscher Befehl eingegeben. Bitte gib einen gültigen Befehl ein.");
             } else if (!response.isEmpty()) {
-                System.out.println(response);
+                System.out.println(response+"\n");
             }
         }
     }

@@ -17,7 +17,7 @@ public class RoomTest {
 
         String out = a.toString().toLowerCase();
         assertTrue(out.contains("ausgänge:"));
-        assertTrue(out.contains(direction.label()));
+        assertTrue(out.contains(direction.label().toLowerCase()));
     }
 
     @Test

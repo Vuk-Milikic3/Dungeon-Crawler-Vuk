@@ -1,10 +1,10 @@
 package org.example;
 
 public enum Direction {
-    NORTH("norden"),
-    SOUTH("süden"),
-    EAST("osten"),
-    WEST("westen");
+    NORTH("(w) Norden"),
+    SOUTH("(s) Süden"),
+    EAST("(d) Osten"),
+    WEST("(a) Westen");
 
     private final String label;
 
