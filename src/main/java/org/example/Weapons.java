@@ -1,6 +1,6 @@
 package org.example;
 
-public class Weapons {
+public class Weapons implements Weapon {
     private final String name;
     private final int damage;
     private final int stackSize;
@@ -21,6 +21,17 @@ public class Weapons {
     public String getName() { return name; }
     public int getDamage() { return damage; }
     public int getStackSize() { return stackSize; }
+
+    @Override
+    public int damage() { return damage; }
+
+    @Override
+    public int stackSize() { return stackSize; }
+
+    @Override
+    public String toString() {
+        return "- Waffe: " + name;
+    }
 }
 
 

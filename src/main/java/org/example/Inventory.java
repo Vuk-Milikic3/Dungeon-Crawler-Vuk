@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Inventory {
     private final int capacity;
-    private final List<Object> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     public Inventory(int capacity) {
         this.capacity = capacity;
@@ -16,7 +16,7 @@ public class Inventory {
         return items.size() >= capacity;
     }
 
-    public int used() {
+    public int spaceUsed() {
         return items.size();
     }
 
@@ -24,18 +24,32 @@ public class Inventory {
         return capacity;
     }
 
-    public boolean add(Object item) {
+    public boolean add(Item item) {
         if (item == null || isFull()) return false;
         return items.add(item);
     }
 
-    public boolean remove(Object item) {
+    public boolean remove(Item item) {
         if (item == null) return false;
         return items.remove(item);
     }
 
-    public List<Object> list() {
+    public List<Item> list() {
         return Collections.unmodifiableList(items);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Inventar (").append(spaceUsed()).append("/").append(capacity()).append(")\n");
+        if (items.isEmpty()) {
+            sb.append("Leer");
+        } else {
+            for (Item item : items) {
+                sb.append(item.toString()).append("\n");
+            }
+        }
+        return sb.toString();
     }
 }
 

@@ -10,8 +10,8 @@ public class Room {
     private final String name;
     private final String beschreibung;
     private final Map<Direction, Room> exits = new LinkedHashMap<>();
-    private final List<Potions> potions = new ArrayList<>();
-    private final List<Weapons> weapons = new ArrayList<>();
+    private final List<Potion> potions = new ArrayList<>();
+    private final List<Weapon> weapons = new ArrayList<>();
 
     public Room(String name, String beschreibung) {
         this.name = name;
@@ -26,21 +26,21 @@ public class Room {
         return exits.get(direction);
     }
 
-    public void addPotion(Potions potion) {
+    public void addPotion(Potion potion) {
         if (potion == null) return;
         potions.add(potion);
     }
 
 
-    public void addWeapon(Weapons weapon) {
+    public void addWeapon(Weapon weapon) {
         if (weapon == null) return;
         weapons.add(weapon);
     }
 
-    public Potions removePotionByName(String name) {
+    public Potion removePotionByName(String name) {
         if (name == null) return null;
         for (int i = 0; i < potions.size(); i++) {
-            Potions p = potions.get(i);
+            Potion p = potions.get(i);
             if (p.getName().equalsIgnoreCase(name)) {
                 potions.remove(i);
                 return p;
@@ -49,10 +49,10 @@ public class Room {
         return null;
     }
 
-    public Weapons removeWeaponByName(String name) {
+    public Weapon removeWeaponByName(String name) {
         if (name == null) return null;
         for (int i = 0; i < weapons.size(); i++) {
-            Weapons w = weapons.get(i);
+            Weapon w = weapons.get(i);
             if (w.getName().equalsIgnoreCase(name)) {
                 weapons.remove(i);
                 return w;
@@ -78,7 +78,7 @@ public class Room {
         if (!potions.isEmpty()) {
             sb.append("\n");
             List<String> potionNames = new ArrayList<>();
-            for (Potions p : potions) {
+            for (Potion p : potions) {
                 potionNames.add(p.getName());
             }
             sb.append("Tränke hier: ").append(String.join(", ", potionNames));
@@ -86,7 +86,7 @@ public class Room {
         if (!weapons.isEmpty()) {
             sb.append("\n");
             List<String> weaponNames = new ArrayList<>();
-            for (Weapons w : weapons) {
+            for (Weapon w : weapons) {
                 weaponNames.add(w.getName());
             }
             sb.append("Waffen hier: ").append(String.join(", ", weaponNames));

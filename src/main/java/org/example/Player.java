@@ -36,16 +36,16 @@ public class Player {
         if (inventory.isFull()) {
             return "Dein Inventar ist voll.";
         }
-        Potions p = currentRoom.removePotionByName(name);
+        Potion p = currentRoom.removePotionByName(name);
         if (p != null) {
             inventory.add(p);
-            status.setInventoryUsed(inventory.used());
+            status.setInventoryUsed(inventory.spaceUsed());
             return "Du nimmst: " + p.getName();
         }
-        Weapons w = currentRoom.removeWeaponByName(name);
+        Weapon w = currentRoom.removeWeaponByName(name);
         if (w != null) {
             inventory.add(w);
-            status.setInventoryUsed(inventory.used());
+            status.setInventoryUsed(inventory.spaceUsed());
             return "Du nimmst: " + w.getName();
         }
         return "Das gibt es hier nicht.";
@@ -53,9 +53,9 @@ public class Player {
 
     public String dropItem(String name) {
         if (currentRoom == null) return "";
-        Object found = null;
-        for (Object o : inventory.list()) {
-            String n = (o instanceof Potions) ? ((Potions) o).getName() : (o instanceof Weapons) ? ((Weapons) o).getName() : null;
+        Item found = null;
+        for (Item o : inventory.list()) {
+            String n = o.getName();
             if (n != null && n.equalsIgnoreCase(name)) {
                 found = o;
                 break;
@@ -65,30 +65,17 @@ public class Player {
             return "Das hast du nicht im Inventar.";
         }
         inventory.remove(found);
-        status.setInventoryUsed(inventory.used());
-        if (found instanceof Potions) {
-            currentRoom.addPotion((Potions) found);
-        } else if (found instanceof Weapons) {
-            currentRoom.addWeapon((Weapons) found);
+        status.setInventoryUsed(inventory.spaceUsed());
+        if (found instanceof Potion) {
+            currentRoom.addPotion((Potion) found);
+        } else if (found instanceof Weapon) {
+            currentRoom.addWeapon((Weapon) found);
         }
         return "Du legst ab: " + name;
     }
 
     public String showInventory() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Inventar (" ).append(inventory.used()).append("/").append(inventory.capacity()).append(")\n");
-        if (inventory.list().isEmpty()) {
-            sb.append("Leer");
-        } else {
-            for (Object o : inventory.list()) {
-                if (o instanceof Potions) {
-                    sb.append("- Trank: ").append(((Potions) o).getName()).append("\n");
-                } else if (o instanceof Weapons) {
-                    sb.append("- Waffe: ").append(((Weapons) o).getName()).append("\n");
-                }
-            }
-        }
-        return sb.toString();
+        return inventory.toString();
     }
 }
 

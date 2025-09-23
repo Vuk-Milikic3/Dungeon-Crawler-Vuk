@@ -46,13 +46,12 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
-        if (normalized.startsWith("nimm ")) {
-            String name = command.substring(5).trim();
-            return player.takeItem(name);
+        String[] parts = command.trim().split("\\s+", 2);
+        if (parts.length == 2 && parts[0].equalsIgnoreCase("nimm")) {
+            return player.takeItem(parts[1].trim());
         }
-        if (normalized.startsWith("lege ")) {
-            String name = command.substring(5).trim();
-            return player.dropItem(name);
+        if (parts.length == 2 && parts[0].equalsIgnoreCase("lege")) {
+            return player.dropItem(parts[1].trim());
         }
         return switch (normalized) {
             case "status" -> player.getPlayerStatus().toString();
