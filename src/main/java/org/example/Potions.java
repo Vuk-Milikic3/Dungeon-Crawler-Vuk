@@ -10,7 +10,7 @@ public class Potions {
     }
 
     public static Potions newHealPotionLarge() {
-        return new Potions("Großer Weisen-Heiltrank", 60, 0);
+        return new Potions("Grosser Weisen-Heiltrank", 60, 0);
     }
 
     public static Potions newChakraPotionSmall() {
@@ -18,7 +18,7 @@ public class Potions {
     }
 
     public static Potions newChakraPotionLarge() {
-        return new Potions("Großes Weisen-Chakra-Elixier", 0, 50);
+        return new Potions("Grosses Weisen-Chakra-Elixier", 0, 50);
     }
 
     public Potions(String name, int healing, int chakraPowerUp) {
