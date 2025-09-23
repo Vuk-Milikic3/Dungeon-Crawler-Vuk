@@ -16,6 +16,16 @@ public class RoomConnections {
         waffenkammer.connect(Direction.EAST, bibliothek);
         bibliothek.connect(Direction.WEST, waffenkammer);
 
+        kerker.addPotion(Potions.newHealPotionSmall());
+        waffenkammer.addPotion(Potions.newChakraPotionSmall());
+        bibliothek.addPotion(Potions.newHealPotionLarge());
+        bibliothek.addPotion(Potions.newChakraPotionLarge());
+
+        kerker.addWeapon(Weapons.newKunaiStack());
+        waffenkammer.addWeapon(Weapons.newKurzschwert());
+        waffenkammer.addWeapon(Weapons.newShurikenStack());
+        bibliothek.addWeapon(Weapons.newKatana());
+
     }
 
     public Room getStartRoom() {

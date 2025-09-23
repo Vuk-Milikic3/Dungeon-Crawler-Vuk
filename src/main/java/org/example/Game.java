@@ -46,9 +46,18 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
+        if (normalized.startsWith("nimm ")) {
+            String name = command.substring(5).trim();
+            return player.takeItem(name);
+        }
+        if (normalized.startsWith("lege ")) {
+            String name = command.substring(5).trim();
+            return player.dropItem(name);
+        }
         return switch (normalized) {
             case "status" -> player.getPlayerStatus().toString();
             case "schauen" -> player.getCurrentRoomDescription();
+            case "inventar" -> player.showInventory();
             case "w" -> player.move(Direction.NORTH);
             case "a" -> player.move(Direction.WEST);
             case "s" -> player.move(Direction.SOUTH);

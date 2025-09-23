@@ -4,7 +4,7 @@ public class PlayerStatus {
     private final int currentHp;
     private final int maxHp;
     private final int chakra;
-    private final int inventoryUsed;
+    private int inventoryUsed;
     private final int inventoryCapacity;
 
     public PlayerStatus(int currentHp, int maxHp, int chakra, int inventoryUsed, int inventoryCapacity) {
@@ -25,6 +25,10 @@ public class PlayerStatus {
                 inventoryUsed,
                 inventoryCapacity
         );
+    }
+
+    public void setInventoryUsed(int inventoryUsed) {
+        this.inventoryUsed = inventoryUsed;
     }
 }
 
