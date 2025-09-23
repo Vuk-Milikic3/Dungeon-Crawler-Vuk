@@ -54,7 +54,7 @@ public class Game {
             return player.dropItem(parts[1].trim());
         }
         return switch (normalized) {
-            case "status" -> player.getPlayerStatus().toString();
+            case "status" -> player.getStatusString();
             case "schauen" -> player.getCurrentRoomDescription();
             case "inventar" -> player.showInventory();
             case "w" -> player.move(Direction.NORTH);

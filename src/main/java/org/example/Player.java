@@ -6,7 +6,7 @@ public class Player {
     private final Inventory inventory;
 
     public Player(Room startRoom) {
-        this.status = new PlayerStatus(100, 100, 10, 0, 8);
+        this.status = new PlayerStatus(100, 100, 10);
         this.currentRoom = startRoom;
         this.inventory = new Inventory(8);
     }
@@ -39,13 +39,11 @@ public class Player {
         Potion p = currentRoom.removePotionByName(name);
         if (p != null) {
             inventory.add(p);
-            status.setInventoryUsed(inventory.spaceUsed());
             return "Du nimmst: " + p.getName();
         }
         Weapon w = currentRoom.removeWeaponByName(name);
         if (w != null) {
             inventory.add(w);
-            status.setInventoryUsed(inventory.spaceUsed());
             return "Du nimmst: " + w.getName();
         }
         return "Das gibt es hier nicht.";
@@ -65,7 +63,7 @@ public class Player {
             return "Das hast du nicht im Inventar.";
         }
         inventory.remove(found);
-        status.setInventoryUsed(inventory.spaceUsed());
+        
         if (found instanceof Potion) {
             currentRoom.addPotion((Potion) found);
         } else if (found instanceof Weapon) {
@@ -76,6 +74,10 @@ public class Player {
 
     public String showInventory() {
         return inventory.toString();
+    }
+
+    public String getStatusString() {
+        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity();
     }
 }
 
