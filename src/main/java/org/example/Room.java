@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
 
 
 public class Room {
     private final String name;
     private final String beschreibung;
     private final Map<Direction, Room> exits = new LinkedHashMap<>();
-    private final List<Potion> potions = new ArrayList<>();
-    private final List<Weapon> weapons = new ArrayList<>();
+    private final Map<String, List<Item>> lootByName = new LinkedHashMap<>();
 
     public Room(String name, String beschreibung) {
         this.name = name;
@@ -28,22 +28,30 @@ public class Room {
 
     public void addPotion(Potion potion) {
         if (potion == null) return;
-        potions.add(potion);
+        addItem(potion);
     }
 
 
     public void addWeapon(Weapon weapon) {
         if (weapon == null) return;
-        weapons.add(weapon);
+        addItem(weapon);
+    }
+
+    private void addItem(Item item) {
+        String key = item.getName() == null ? "" : item.getName().toLowerCase();
+        lootByName.computeIfAbsent(key, k -> new LinkedList<>()).add(item);
     }
 
     public Potion removePotionByName(String name) {
         if (name == null) return null;
-        for (int i = 0; i < potions.size(); i++) {
-            Potion p = potions.get(i);
-            if (p.getName().equalsIgnoreCase(name)) {
-                potions.remove(i);
-                return p;
+        List<Item> bucket = lootByName.get(name.toLowerCase());
+        if (bucket == null || bucket.isEmpty()) return null;
+        for (int i = 0; i < bucket.size(); i++) {
+            Item it = bucket.get(i);
+            if (it instanceof Potion) {
+                bucket.remove(i);
+                if (bucket.isEmpty()) lootByName.remove(name.toLowerCase());
+                return (Potion) it;
             }
         }
         return null;
@@ -51,11 +59,14 @@ public class Room {
 
     public Weapon removeWeaponByName(String name) {
         if (name == null) return null;
-        for (int i = 0; i < weapons.size(); i++) {
-            Weapon w = weapons.get(i);
-            if (w.getName().equalsIgnoreCase(name)) {
-                weapons.remove(i);
-                return w;
+        List<Item> bucket = lootByName.get(name.toLowerCase());
+        if (bucket == null || bucket.isEmpty()) return null;
+        for (int i = 0; i < bucket.size(); i++) {
+            Item it = bucket.get(i);
+            if (it instanceof Weapon) {
+                bucket.remove(i);
+                if (bucket.isEmpty()) lootByName.remove(name.toLowerCase());
+                return (Weapon) it;
             }
         }
         return null;
@@ -75,20 +86,21 @@ public class Room {
             }
             sb.append("Ausgänge: ").append(String.join(", ", directionLabels));
         }
-        if (!potions.isEmpty()) {
+        List<String> potionNames = new ArrayList<>();
+        List<String> weaponNames = new ArrayList<>();
+        for (List<Item> bucket : lootByName.values()) {
+            if (bucket.isEmpty()) continue;
+            Item first = bucket.get(0);
+            String displayName = first.getName();
+            if (first instanceof Potion) potionNames.add(displayName);
+            else if (first instanceof Weapon) weaponNames.add(displayName);
+        }
+        if (!potionNames.isEmpty()) {
             sb.append("\n");
-            List<String> potionNames = new ArrayList<>();
-            for (Potion p : potions) {
-                potionNames.add(p.getName());
-            }
             sb.append("Tränke hier: ").append(String.join(", ", potionNames));
         }
-        if (!weapons.isEmpty()) {
+        if (!weaponNames.isEmpty()) {
             sb.append("\n");
-            List<String> weaponNames = new ArrayList<>();
-            for (Weapon w : weapons) {
-                weaponNames.add(w.getName());
-            }
             sb.append("Waffen hier: ").append(String.join(", ", weaponNames));
         }
         return sb.toString();
