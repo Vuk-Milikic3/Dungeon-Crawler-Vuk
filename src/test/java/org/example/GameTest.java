@@ -18,21 +18,21 @@ public class GameTest {
     }
 
     @Test
-    void processCommand_status_returnsFormattedStats() {
+    void status_command_should_return_formatted_stats() {
         Game game = new Game();
         String result = game.processCommand("status");
         assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 0/8", result);
     }
 
     @Test
-    void processCommand_unknown_returnsErrorMessage() {
+    void unknown_command_should_return_error_message() {
         Game game = new Game();
         String result = game.processCommand("bar");
         assertEquals("Unbekannter Befehl", result);
     }
 
     @Test
-    void processCommand_schauen_showsRoomNameAndExits() {
+    void schauen_should_show_room_name_and_exits() {
         Game game = new Game();
         String out = game.processCommand("schauen");
         boolean hasName = out.contains("Raum: Kerker");
@@ -42,6 +42,14 @@ public class GameTest {
                 lower.contains("norden") || lower.contains("süden") ||
                 lower.contains("osten") || lower.contains("westen");
         assertTrue(hasName && hasExit && hasExitLabel);
+    }
+
+    @Test
+    void inventar_text_should_start_with_Inventar() {
+        Game game = new Game();
+        game.processCommand("w");
+        String out = game.processCommand("inventar");
+        assertTrue(out.startsWith("Inventar ("));
     }
 
     private static Stream<Arguments> movementCases() {
@@ -55,7 +63,7 @@ public class GameTest {
 
     @ParameterizedTest
     @MethodSource("movementCases")
-    void processCommand_wasd_parameterized(String pre, String cmd, String expectedContains) {
+    void wasd_moves_should_work(String pre, String cmd, String expectedContains) {
         Game game = new Game();
         for (char c : pre.toCharArray()) {
             game.processCommand(String.valueOf(c));

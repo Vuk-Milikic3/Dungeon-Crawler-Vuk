@@ -46,9 +46,17 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
+        String[] parts = command.trim().split("\\s+", 2);
+        if (parts.length == 2 && parts[0].equalsIgnoreCase("nimm")) {
+            return player.takeItem(parts[1].trim());
+        }
+        if (parts.length == 2 && parts[0].equalsIgnoreCase("lege")) {
+            return player.dropItem(parts[1].trim());
+        }
         return switch (normalized) {
-            case "status" -> player.getPlayerStatus().toString();
+            case "status" -> player.getStatusString();
             case "schauen" -> player.getCurrentRoomDescription();
+            case "inventar" -> player.showInventory();
             case "w" -> player.move(Direction.NORTH);
             case "a" -> player.move(Direction.WEST);
             case "s" -> player.move(Direction.SOUTH);

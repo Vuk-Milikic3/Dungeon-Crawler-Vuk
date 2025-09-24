@@ -1,15 +1,13 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Room {
     private final String name;
     private final String beschreibung;
     private final Map<Direction, Room> exits = new LinkedHashMap<>();
+    private final Map<String, Item> lootByName = new LinkedHashMap<>();
 
     public Room(String name, String beschreibung) {
         this.name = name;
@@ -22,6 +20,52 @@ public class Room {
 
     public Room getNextRoom(Direction direction) {
         return exits.get(direction);
+    }
+
+    public void addPotion(Potion potion) {
+        if (potion == null) return;
+        addItem(potion);
+    }
+
+
+    public void addWeapon(Weapon weapon) {
+        if (weapon == null) return;
+        addItem(weapon);
+    }
+
+    public void addItem(Item item) {
+        if (item == null) return;
+        String key = item.getName() == null ? "" : item.getName().toLowerCase();
+        lootByName.put(key, item);
+    }
+
+
+    public Optional<Potion> removePotionByName(String name) {
+        if (name == null) {
+            return Optional.empty();
+        }
+
+        Item item = lootByName.get(name.toLowerCase());
+        return Optional.ofNullable(item)
+                .filter(Potion.class::isInstance)
+                .map(item2 -> {
+                    lootByName.remove(name.toLowerCase());
+                    return (Potion) item2;
+                });
+    }
+
+
+    public Optional<Weapon> removeWeaponByName(String name) {
+        if (name == null) {
+            return Optional.empty();
+        }
+        Item item = lootByName.get(name.toLowerCase());
+        return Optional.ofNullable(item)
+                .filter(Weapon.class::isInstance)
+                .map(item2 -> {
+                    lootByName.remove(name.toLowerCase());
+                    return (Weapon) item2;
+                });
     }
 
     @Override
@@ -37,6 +81,21 @@ public class Room {
                 directionLabels.add(d.label());
             }
             sb.append("Ausgänge: ").append(String.join(", ", directionLabels));
+        }
+        List<String> potionNames = new ArrayList<>();
+        List<String> weaponNames = new ArrayList<>();
+        for (Item item : lootByName.values()) {
+            String displayName = item.getName();
+            if (item instanceof Potion) potionNames.add(displayName);
+            else if (item instanceof Weapon) weaponNames.add(displayName);
+        }
+        if (!potionNames.isEmpty()) {
+            sb.append("\n");
+            sb.append("Tränke hier: ").append(String.join(", ", potionNames));
+        }
+        if (!weaponNames.isEmpty()) {
+            sb.append("\n");
+            sb.append("Waffen hier: ").append(String.join(", ", weaponNames));
         }
         return sb.toString();
     }

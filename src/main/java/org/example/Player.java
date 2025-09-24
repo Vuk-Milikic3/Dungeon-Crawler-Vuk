@@ -1,20 +1,20 @@
 package org.example;
 
+import java.util.Optional;
+
 public class Player {
     private final PlayerStatus status;
     private Room currentRoom;
+    private final Inventory inventory;
 
     public Player(Room startRoom) {
-        this.status = new PlayerStatus(100, 100, 10, 0, 8);
+        this.status = new PlayerStatus(100, 100, 10);
         this.currentRoom = startRoom;
-    }
-
-    public PlayerStatus getStatus() {
-        return status;
+        this.inventory = new Inventory(8);
     }
 
     public PlayerStatus getPlayerStatus() {
-        return getStatus();
+        return status;
     }
 
     public String getCurrentRoomDescription() {
@@ -31,6 +31,53 @@ public class Player {
         }
         currentRoom = nextRoom;
         return currentRoom.toString();
+    }
+
+    public String takeItem(String name) {
+        if (currentRoom == null) return "";
+        if (inventory.isFull()) {
+            return "Dein Inventar ist voll.";
+        }
+        Optional<Potion> p = currentRoom.removePotionByName(name);
+        if (p.isPresent()) {
+            Potion potion = p.get();
+            inventory.add(potion);
+            return "Du nimmst: " + potion.getName();
+        }
+        Optional<Weapon> w = currentRoom.removeWeaponByName(name);
+        if (w.isPresent()) {
+            Weapon weapon = w.get();
+            inventory.add(weapon);
+            return "Du nimmst: " + weapon.getName();
+        }
+        return "Das gibt es hier nicht.";
+    }
+
+    public String dropItem(String name) {
+        if (currentRoom == null) return "";
+        Item found = null;
+        for (Item item : inventory.list()) {
+            String n = item.getName();
+            if (n != null && n.equalsIgnoreCase(name)) {
+                found = item;
+                break;
+            }
+        }
+        if (found == null) {
+            return "Das hast du nicht im Inventar.";
+        }
+        inventory.remove(found);
+        
+        currentRoom.addItem(found);
+        return "Du legst ab: " + name;
+    }
+
+    public String showInventory() {
+        return inventory.toString();
+    }
+
+    public String getStatusString() {
+        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity();
     }
 }
 
