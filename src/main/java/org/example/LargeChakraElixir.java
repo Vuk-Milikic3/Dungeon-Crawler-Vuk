@@ -1,7 +1,7 @@
 package org.example;
 
 public class LargeChakraElixir implements ChakraPotion {
-    private final String name = "Grosses Weisen-Chakra-Elixier";
+    private final String name = "Grosses-Weisen-Chakra-Elixier";
     private final int chakra = 50;
 
     @Override

@@ -40,6 +40,18 @@ public class Inventory {
         return itemsByName.remove(key) != null;
     }
 
+    public java.util.Optional<Item> removeByName(String name) {
+        if (name == null) return java.util.Optional.empty();
+        String key = name.toLowerCase();
+        Item removed = itemsByName.remove(key);
+        return java.util.Optional.ofNullable(removed);
+    }
+
+    public java.util.Optional<Item> findByName(String name) {
+        if (name == null) return java.util.Optional.empty();
+        return java.util.Optional.ofNullable(itemsByName.get(name.toLowerCase()));
+    }
+
     public List<Item> list() {
         return Collections.unmodifiableList(new ArrayList<>(itemsByName.values()));
     }

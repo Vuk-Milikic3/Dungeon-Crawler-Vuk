@@ -46,12 +46,18 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
-        String[] parts = command.trim().split("\\s+", 2);
+        String[] parts = command.split(" ");
         if (parts.length == 2 && parts[0].equalsIgnoreCase("nimm")) {
             return player.takeItem(parts[1].trim());
         }
         if (parts.length == 2 && parts[0].equalsIgnoreCase("lege")) {
             return player.dropItem(parts[1].trim());
+        }
+        if (parts.length == 2 && parts[0].equalsIgnoreCase("nutze")) {
+            return player.usePotion(parts[1].trim());
+        }
+        if (parts.length == 3 && parts[0].equalsIgnoreCase("rüste") && parts[2].equalsIgnoreCase("aus")) {
+            return player.equipWeapon(parts[1].trim());
         }
         return switch (normalized) {
             case "status" -> player.getStatusString();

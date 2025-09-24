@@ -1,7 +1,7 @@
 package org.example;
 
 public class SmallHealingPotion implements HealingPotion {
-    private final String name = "Kleiner Kyubi-Heiltrank";
+    private final String name = "Kleiner-Kyubi-Heiltrank";
     private final int healing = 25;
 
     @Override

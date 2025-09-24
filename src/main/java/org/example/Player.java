@@ -6,6 +6,7 @@ public class Player {
     private final PlayerStatus status;
     private Room currentRoom;
     private final Inventory inventory;
+    private Weapon equippedWeapon;
 
     public Player(Room startRoom) {
         this.status = new PlayerStatus(100, 100, 10);
@@ -73,11 +74,45 @@ public class Player {
     }
 
     public String showInventory() {
-        return inventory.toString();
+        String base = inventory.toString();
+        String weaponLine = equippedWeapon == null ? "Ausgerüstete Waffe: keine | Angriff: 10" :
+                ("Ausgerüstete Waffe: " + equippedWeapon.getName() + " | Angriff: " + (10 + equippedWeapon.damage()));
+        return base + "\n" + weaponLine;
     }
 
     public String getStatusString() {
-        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity();
+        String weaponInfo = equippedWeapon == null ? "keine" : equippedWeapon.getName();
+        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity() + " | Waffe: " + weaponInfo;
+    }
+
+    public String usePotion(String name) {
+        java.util.Optional<Item> found = inventory.findByName(name);
+        if (found.isEmpty() || !(found.get() instanceof Potion)) {
+            return "Du hast keinen passenden Trank im Inventar.";
+        }
+        Item item = found.get();
+        if (item instanceof HealingPotion && !(item instanceof ChakraPotion)) {
+            if (status.getCurrentHp() >= status.getMaxHp()) {
+                return "Du bist nicht verletzt.";
+            }
+        }
+        if (item instanceof HealingPotion) {
+            status.heal(((HealingPotion) item).heal());
+        }
+        if (item instanceof ChakraPotion) {
+            status.restoreChakra(((ChakraPotion) item).chakraPowerUp());
+        }
+        inventory.removeByName(name);
+        return "Du verwendest: " + name + " | " + status.toString();
+    }
+
+    public String equipWeapon(String name) {
+        java.util.Optional<Item> found = inventory.findByName(name);
+        if (found.isEmpty() || !(found.get() instanceof Weapon)) {
+            return "Diese Waffe hast du nicht im Inventar.";
+        }
+        equippedWeapon = (Weapon) found.get();
+        return "Du rüstest aus: " + equippedWeapon.getName();
     }
 }
 
