@@ -45,15 +45,13 @@ public class Room {
             return Optional.empty();
         }
 
-        Item it = lootByName.get(name.toLowerCase());
-        if (it == null) {
-            return Optional.empty();
-        }
-        if (it instanceof Potion) {
-            lootByName.remove(name.toLowerCase());
-            return Optional.of((Potion) it);
-        }
-        return Optional.empty();
+        Item item = lootByName.get(name.toLowerCase());
+        return Optional.ofNullable(item)
+                .filter(Potion.class::isInstance)
+                .map(item2 -> {
+                    lootByName.remove(name.toLowerCase());
+                    return (Potion) item2;
+                });
     }
 
 
@@ -61,15 +59,13 @@ public class Room {
         if (name == null) {
             return Optional.empty();
         }
-        Item it = lootByName.get(name.toLowerCase());
-        if (it == null) {
-            return Optional.empty();
-        }
-        if (it instanceof Weapon) {
-            lootByName.remove(name.toLowerCase());
-            return Optional.of((Weapon) it);
-        }
-        return Optional.empty();
+        Item item = lootByName.get(name.toLowerCase());
+        return Optional.ofNullable(item)
+                .filter(Weapon.class::isInstance)
+                .map(item2 -> {
+                    lootByName.remove(name.toLowerCase());
+                    return (Weapon) item2;
+                });
     }
 
     @Override
@@ -88,10 +84,10 @@ public class Room {
         }
         List<String> potionNames = new ArrayList<>();
         List<String> weaponNames = new ArrayList<>();
-        for (Item it : lootByName.values()) {
-            String displayName = it.getName();
-            if (it instanceof Potion) potionNames.add(displayName);
-            else if (it instanceof Weapon) weaponNames.add(displayName);
+        for (Item item : lootByName.values()) {
+            String displayName = item.getName();
+            if (item instanceof Potion) potionNames.add(displayName);
+            else if (item instanceof Weapon) weaponNames.add(displayName);
         }
         if (!potionNames.isEmpty()) {
             sb.append("\n");

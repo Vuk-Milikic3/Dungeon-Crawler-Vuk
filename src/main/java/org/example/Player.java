@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Optional;
+
 public class Player {
     private final PlayerStatus status;
     private Room currentRoom;
@@ -36,13 +38,13 @@ public class Player {
         if (inventory.isFull()) {
             return "Dein Inventar ist voll.";
         }
-        java.util.Optional<Potion> p = currentRoom.removePotionByName(name);
+        Optional<Potion> p = currentRoom.removePotionByName(name);
         if (p.isPresent()) {
             Potion potion = p.get();
             inventory.add(potion);
             return "Du nimmst: " + potion.getName();
         }
-        java.util.Optional<Weapon> w = currentRoom.removeWeaponByName(name);
+        Optional<Weapon> w = currentRoom.removeWeaponByName(name);
         if (w.isPresent()) {
             Weapon weapon = w.get();
             inventory.add(weapon);

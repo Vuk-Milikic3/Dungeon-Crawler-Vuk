@@ -1,19 +1,18 @@
 package org.example;
 
-public class WeaponItem implements Weapon {
+public class ThrowingKnife implements Weapon {
     private final String name;
     private final int damage;
-    private final int stackSize;
+    private final int stackSize = 6;
 
-    
-
-    public WeaponItem(String name, int damage, int stackSize) {
+    public ThrowingKnife(String name, int damage) {
         this.name = name;
         this.damage = damage;
-        this.stackSize = stackSize;
     }
 
+    @Override
     public String getName() { return name; }
+
     public int getDamage() { return damage; }
     public int getStackSize() { return stackSize; }
 
@@ -24,9 +23,7 @@ public class WeaponItem implements Weapon {
     public int stackSize() { return stackSize; }
 
     @Override
-    public String toString() {
-        return "- Waffe: " + name;
-    }
+    public String toString() { return "- Waffe: " + name; }
 }
 
 
