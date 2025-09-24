@@ -16,15 +16,15 @@ public class RoomConnections {
         waffenkammer.connect(Direction.EAST, bibliothek);
         bibliothek.connect(Direction.WEST, waffenkammer);
 
-        kerker.addPotion(Potions.newHealPotionSmall());
-        waffenkammer.addPotion(Potions.newChakraPotionSmall());
-        bibliothek.addPotion(Potions.newHealPotionLarge());
-        bibliothek.addPotion(Potions.newChakraPotionLarge());
+        kerker.addPotion(new PotionItem("Kleiner Kyubi-Heiltrank", 25, 0));
+        waffenkammer.addPotion(new PotionItem("Kleines Chakra-Elixier", 0, 20));
+        bibliothek.addPotion(new PotionItem("Grosser Weisen-Heiltrank", 60, 0));
+        bibliothek.addPotion(new PotionItem("Grosses Weisen-Chakra-Elixier", 0, 50));
 
-        kerker.addWeapon(Weapons.newKunaiStack());
-        waffenkammer.addWeapon(Weapons.newKurzschwert());
-        waffenkammer.addWeapon(Weapons.newShurikenStack());
-        bibliothek.addWeapon(Weapons.newKatana());
+        kerker.addWeapon(new WeaponItem("Kunai (6)", 8, 6));
+        waffenkammer.addWeapon(new WeaponItem("Kurzschwert", 12, 1));
+        waffenkammer.addWeapon(new WeaponItem("Shuriken (6)", 7, 6));
+        bibliothek.addWeapon(new WeaponItem("Katana", 16, 1));
 
     }
 

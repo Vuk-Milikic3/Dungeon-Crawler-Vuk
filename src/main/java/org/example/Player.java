@@ -36,15 +36,17 @@ public class Player {
         if (inventory.isFull()) {
             return "Dein Inventar ist voll.";
         }
-        Potion p = currentRoom.removePotionByName(name);
-        if (p != null) {
-            inventory.add(p);
-            return "Du nimmst: " + p.getName();
+        java.util.Optional<Potion> p = currentRoom.removePotionByName(name);
+        if (p.isPresent()) {
+            Potion potion = p.get();
+            inventory.add(potion);
+            return "Du nimmst: " + potion.getName();
         }
-        Weapon w = currentRoom.removeWeaponByName(name);
-        if (w != null) {
-            inventory.add(w);
-            return "Du nimmst: " + w.getName();
+        java.util.Optional<Weapon> w = currentRoom.removeWeaponByName(name);
+        if (w.isPresent()) {
+            Weapon weapon = w.get();
+            inventory.add(weapon);
+            return "Du nimmst: " + weapon.getName();
         }
         return "Das gibt es hier nicht.";
     }
@@ -52,10 +54,10 @@ public class Player {
     public String dropItem(String name) {
         if (currentRoom == null) return "";
         Item found = null;
-        for (Item o : inventory.list()) {
-            String n = o.getName();
+        for (Item item : inventory.list()) {
+            String n = item.getName();
             if (n != null && n.equalsIgnoreCase(name)) {
-                found = o;
+                found = item;
                 break;
             }
         }
@@ -64,11 +66,7 @@ public class Player {
         }
         inventory.remove(found);
         
-        if (found instanceof Potion) {
-            currentRoom.addPotion((Potion) found);
-        } else if (found instanceof Weapon) {
-            currentRoom.addWeapon((Weapon) found);
-        }
+        currentRoom.addItem(found);
         return "Du legst ab: " + name;
     }
 
