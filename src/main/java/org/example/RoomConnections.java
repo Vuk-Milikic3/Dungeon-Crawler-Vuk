@@ -21,9 +21,9 @@ public class RoomConnections {
         bibliothek.addPotion(new LargeHealingPotion());
         bibliothek.addPotion(new LargeChakraElixir());
 
-        kerker.addWeapon(new ThrowingKnife("Kunai (6)", 8));
-        waffenkammer.addWeapon(new Sword("Shortsword", 12));
-        waffenkammer.addWeapon(new ThrowingKnife("Shuriken (6)", 7));
+        kerker.addWeapon(new ThrowingKnife("Kunai-(6)", 8));
+        waffenkammer.addWeapon(new Sword("Kurzschwert", 12));
+        waffenkammer.addWeapon(new ThrowingKnife("Shuriken-(6)", 7));
         bibliothek.addWeapon(new Sword("Katana", 16));
 
     }
