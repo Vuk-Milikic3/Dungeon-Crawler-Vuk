@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PlayerTest {
 
     @Test
-    void move_returnsNewRoomDescription_onValidExit() {
+    void move_should_return_new_room_description_on_valid_exit() {
         Room start = new Room("Start", "");
         Room next = new Room("Ziel", "");
         start.connect(Direction.NORTH, next);
@@ -20,7 +20,7 @@ public class PlayerTest {
     }
 
     @Test
-    void move_returnsWallMessage_onMissingExit() {
+    void move_should_return_wall_message_when_missing_exit() {
         Room start = new Room("Start", "");
         Player player = new Player(start);
 
@@ -30,7 +30,7 @@ public class PlayerTest {
     }
 
     @Test
-    void move_fromNullRoom_returnsEmptyString() {
+    void move_from_null_room_should_return_empty_string() {
         Player player = new Player(null);
 
         String out = player.move(Direction.NORTH);
@@ -39,7 +39,7 @@ public class PlayerTest {
     }
 
     @Test
-    void inventory_nimm_and_lege_flow() {
+    void inventory_nimm_and_lege_flow_should_update_status_and_room() {
         Room r = new Room("R", "");
         Potion p = new SmallHealingPotion();
         r.addPotion(p);

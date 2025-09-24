@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class InventoryTest {
 
     @Test
-    void add_and_remove_updates_used_and_full() {
+    void spaceUsed_should_increase_when_adding_items_until_full() {
         Inventory inv = new Inventory(2);
         assertEquals(0, inv.spaceUsed());
         assertFalse(inv.isFull());
