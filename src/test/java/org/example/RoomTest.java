@@ -37,6 +37,22 @@ public class RoomTest {
         assertTrue(out.contains("ausgänge:"));
         assertTrue(out.contains("norden"));
     }
+
+    @Test
+    void remove_item_by_name_from_room() {
+        Room r = new Room("R", "");
+        Potion p = new SmallHealingPotion();
+        r.addPotion(p);
+        var out = r.removePotionByName(p.getName());
+        assertTrue(out.isPresent());
+        assertTrue(r.removePotionByName(p.getName()).isEmpty());
+
+        Weapon w = new Sword("Katana", 16);
+        r.addWeapon(w);
+        var outW = r.removeWeaponByName(w.getName());
+        assertTrue(outW.isPresent());
+        assertTrue(r.removeWeaponByName(w.getName()).isEmpty());
+    }
 }
 
 

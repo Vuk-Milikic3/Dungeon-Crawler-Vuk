@@ -44,6 +44,14 @@ public class GameTest {
         assertTrue(hasName && hasExit && hasExitLabel);
     }
 
+    @Test
+    void inventar_command_lists_items() {
+        Game game = new Game();
+        game.processCommand("w");
+        String out = game.processCommand("inventar");
+        assertTrue(out.startsWith("Inventar ("));
+    }
+
     private static Stream<Arguments> movementCases() {
         return Stream.of(
                 Arguments.of("", "w", "Raum: Waffenkammer"),

@@ -37,6 +37,26 @@ public class PlayerTest {
 
         assertEquals("", out);
     }
+
+    @Test
+    void inventory_nimm_and_lege_flow() {
+        Room r = new Room("R", "");
+        Potion p = new SmallHealingPotion();
+        r.addPotion(p);
+        Player player = new Player(r);
+
+        String out = player.takeItem(p.getName());
+        assertTrue(out.toLowerCase().contains("du nimmst"));
+        assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 1/8", player.getStatusString());
+        assertEquals("Das gibt es hier nicht.", player.takeItem(p.getName()));
+
+        Weapon w = new Sword("Katana", 16);
+        r.addWeapon(w);
+        player.takeItem(w.getName());
+        String drop = player.dropItem(w.getName());
+        assertTrue(drop.toLowerCase().contains("du legst ab"));
+        assertEquals("Das hast du nicht im Inventar.", player.dropItem(w.getName()));
+    }
 }
 
 
