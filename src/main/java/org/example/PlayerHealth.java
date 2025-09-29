@@ -1,19 +1,16 @@
 package org.example;
 
-public class PlayerStatus {
+public class PlayerHealth {
     private int currentHp;
     private final int maxHp;
-    private int chakra;
 
-    public PlayerStatus(int currentHp, int maxHp, int chakra) {
+    public PlayerHealth(int currentHp, int maxHp) {
         this.currentHp = currentHp;
         this.maxHp = maxHp;
-        this.chakra = chakra;
     }
 
     public int getCurrentHp() { return currentHp; }
     public int getMaxHp() { return maxHp; }
-    public int getChakra() { return chakra; }
 
     public void heal(int amount) {
         if (amount <= 0) return;
@@ -21,20 +18,12 @@ public class PlayerStatus {
         currentHp = Math.min(maxHp, next);
     }
 
-    public void restoreChakra(int amount) {
-        if (amount <= 0) return;
-        chakra = chakra + amount;
-    }
-
     @Override
     public String toString() {
         return String.format(
-                "HP: %d/%d | Chakra: %d",
+                "HP: %d/%d",
                 currentHp,
-                maxHp,
-                chakra
+                maxHp
         );
     }
 }
-
-

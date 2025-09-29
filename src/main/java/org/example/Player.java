@@ -3,23 +3,28 @@ package org.example;
 import java.util.Optional;
 
 public class Player {
-    private final PlayerStatus status;
+    private final PlayerHealth health;
     private Room currentRoom;
     private final Inventory inventory;
-    private Weapon equippedWeapon;
+    private final PlayerDamage damage;
 
     public Player(Room startRoom) {
-        this.status = new PlayerStatus(100, 100, 10);
+        this.health = new PlayerHealth(100, 100);
         this.currentRoom = startRoom;
         this.inventory = new Inventory(8);
+        this.damage = new PlayerDamage(10, 10);
     }
 
-    public PlayerStatus getPlayerStatus() {
-        return status;
+    public PlayerHealth getPlayerHealth() {
+        return health;
     }
 
     public String getCurrentRoomDescription() {
         return currentRoom == null ? "" : currentRoom.toString();
+    }
+
+    public String showInventory() {
+        return inventory.toString();
     }
 
     public String move(Direction direction) {
@@ -73,46 +78,46 @@ public class Player {
         return "Du legst ab: " + name;
     }
 
-    public String showInventory() {
-        String base = inventory.toString();
-        String weaponLine = equippedWeapon == null ? "Ausgerüstete Waffe: keine | Angriff: 10" :
-                ("Ausgerüstete Waffe: " + equippedWeapon.getName() + " | Angriff: " + (10 + equippedWeapon.damage()));
-        return base + "\n" + weaponLine;
-    }
-
     public String getStatusString() {
-        String weaponInfo = equippedWeapon == null ? "keine" : equippedWeapon.getName();
-        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity() + " | Waffe: " + weaponInfo;
+        Weapon w = damage.getEquippedWeapon();
+        String base = health.toString() + " | Chakra: " + damage.getChakra();
+        String weaponName = (w == null) ? "keine" : w.getName();
+        return base
+                + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity()
+                + " | Waffe: " + weaponName
+                + " | Schaden: " + damage.getAttack();
     }
 
     public String usePotion(String name) {
-        java.util.Optional<Item> found = inventory.findByName(name);
+        Optional<Item> found = inventory.findByName(name);
         if (found.isEmpty() || !(found.get() instanceof Potion)) {
             return "Du hast keinen passenden Trank im Inventar.";
         }
         Item item = found.get();
         if (item instanceof HealingPotion && !(item instanceof ChakraPotion)) {
-            if (status.getCurrentHp() >= status.getMaxHp()) {
+            if (health.getCurrentHp() >= health.getMaxHp()) {
                 return "Du bist nicht verletzt.";
             }
         }
         if (item instanceof HealingPotion) {
-            status.heal(((HealingPotion) item).heal());
+            health.heal(((HealingPotion) item).heal());
         }
         if (item instanceof ChakraPotion) {
-            status.restoreChakra(((ChakraPotion) item).chakraPowerUp());
+            damage.restoreChakra(((ChakraPotion) item).chakraPowerUp());
         }
         inventory.removeByName(name);
-        return "Du verwendest: " + name + " | " + status.toString();
+        String statusNow = health.toString() + " | Chakra: " + damage.getChakra();
+        return "Du verwendest: " + name + " | " + statusNow;
     }
 
     public String equipWeapon(String name) {
-        java.util.Optional<Item> found = inventory.findByName(name);
+        Optional<Item> found = inventory.findByName(name);
         if (found.isEmpty() || !(found.get() instanceof Weapon)) {
             return "Diese Waffe hast du nicht im Inventar.";
         }
-        equippedWeapon = (Weapon) found.get();
-        return "Du rüstest aus: " + equippedWeapon.getName();
+        Weapon w = (Weapon) found.get();
+        damage.equip(w);
+        return "Du rüstest aus: " + w.getName();
     }
 }
 
