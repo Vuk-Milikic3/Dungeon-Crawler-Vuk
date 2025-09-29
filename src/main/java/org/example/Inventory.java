@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Inventory {
     private final int capacity;
@@ -38,6 +39,19 @@ public class Inventory {
         if (item == null) return false;
         String key = item.getName() == null ? "" : item.getName().toLowerCase();
         return itemsByName.remove(key) != null;
+    }
+
+    public Optional<Item> removeByName(String name) {
+        return findByName(name).map(item -> {
+            String key = item.getName() == null ? "" : item.getName().toLowerCase();
+            itemsByName.remove(key);
+            return item;
+        });
+    }
+
+    public Optional<Item> findByName(String name) {
+        if (name == null) return Optional.empty();
+        return Optional.ofNullable(itemsByName.get(name.toLowerCase()));
     }
 
     public List<Item> list() {

@@ -3,6 +3,19 @@ package org.example;
 import java.util.Scanner;
 
 public class Game {
+    private static final String COMMAND_TAKE = "nimm";
+    private static final String COMMAND_DROP = "lege";
+    private static final String COMMAND_USE = "nutze";
+    private static final String COMMAND_EQUIP = "rüste";
+    private static final String COMMAND_EQUIP_SUFFIX = "aus";
+    private static final String COMMAND_STATUS = "status";
+    private static final String COMMAND_LOOK = "schauen";
+    private static final String COMMAND_INVENTORY = "inventar";
+    private static final String COMMAND_NORTH = "w";
+    private static final String COMMAND_WEST = "a";
+    private static final String COMMAND_SOUTH = "s";
+    private static final String COMMAND_EAST = "d";
+    private static final String COMMAND_QUIT = "quit";
     private boolean isStarted = false;
     private final Scanner scanner = new Scanner(System.in);
     private final RoomConnections world = new RoomConnections();
@@ -46,22 +59,28 @@ public class Game {
             return "";
         }
         String normalized = command.trim().toLowerCase();
-        String[] parts = command.trim().split("\\s+", 2);
-        if (parts.length == 2 && parts[0].equalsIgnoreCase("nimm")) {
+        String[] parts = command.split(" ");
+        if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_TAKE)) {
             return player.takeItem(parts[1].trim());
         }
-        if (parts.length == 2 && parts[0].equalsIgnoreCase("lege")) {
+        if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_DROP)) {
             return player.dropItem(parts[1].trim());
         }
+        if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_USE)) {
+            return player.usePotion(parts[1].trim());
+        }
+        if (parts.length == 3 && parts[0].equalsIgnoreCase(COMMAND_EQUIP) && parts[2].equalsIgnoreCase(COMMAND_EQUIP_SUFFIX)) {
+            return player.equipWeapon(parts[1].trim());
+        }
         return switch (normalized) {
-            case "status" -> player.getStatusString();
-            case "schauen" -> player.getCurrentRoomDescription();
-            case "inventar" -> player.showInventory();
-            case "w" -> player.move(Direction.NORTH);
-            case "a" -> player.move(Direction.WEST);
-            case "s" -> player.move(Direction.SOUTH);
-            case "d" -> player.move(Direction.EAST);
-            case "quit" -> {
+            case COMMAND_STATUS -> player.getStatusString();
+            case COMMAND_LOOK -> player.getCurrentRoomDescription();
+            case COMMAND_INVENTORY -> player.showInventory();
+            case COMMAND_NORTH -> player.move(Direction.NORTH);
+            case COMMAND_WEST -> player.move(Direction.WEST);
+            case COMMAND_SOUTH -> player.move(Direction.SOUTH);
+            case COMMAND_EAST -> player.move(Direction.EAST);
+            case COMMAND_QUIT -> {
                 isStarted = false;
                 yield "Spiel beendet. Auf Wiedersehen!";
             }

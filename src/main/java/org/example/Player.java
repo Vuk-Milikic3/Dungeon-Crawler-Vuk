@@ -3,22 +3,28 @@ package org.example;
 import java.util.Optional;
 
 public class Player {
-    private final PlayerStatus status;
+    private final PlayerHealth health;
     private Room currentRoom;
     private final Inventory inventory;
+    private final PlayerDamage damage;
 
     public Player(Room startRoom) {
-        this.status = new PlayerStatus(100, 100, 10);
+        this.health = new PlayerHealth(100, 100);
         this.currentRoom = startRoom;
         this.inventory = new Inventory(8);
+        this.damage = new PlayerDamage(10, 10);
     }
 
-    public PlayerStatus getPlayerStatus() {
-        return status;
+    public PlayerHealth getPlayerHealth() {
+        return health;
     }
 
     public String getCurrentRoomDescription() {
         return currentRoom == null ? "" : currentRoom.toString();
+    }
+
+    public String showInventory() {
+        return inventory.toString();
     }
 
     public String move(Direction direction) {
@@ -38,15 +44,15 @@ public class Player {
         if (inventory.isFull()) {
             return "Dein Inventar ist voll.";
         }
-        Optional<Potion> p = currentRoom.removePotionByName(name);
-        if (p.isPresent()) {
-            Potion potion = p.get();
+        Optional<Potion> optionalPotion = currentRoom.removePotionByName(name);
+        if (optionalPotion.isPresent()) {
+            Potion potion = optionalPotion.get();
             inventory.add(potion);
             return "Du nimmst: " + potion.getName();
         }
-        Optional<Weapon> w = currentRoom.removeWeaponByName(name);
-        if (w.isPresent()) {
-            Weapon weapon = w.get();
+        Optional<Weapon> optionalWeapon = currentRoom.removeWeaponByName(name);
+        if (optionalWeapon.isPresent()) {
+            Weapon weapon = optionalWeapon.get();
             inventory.add(weapon);
             return "Du nimmst: " + weapon.getName();
         }
@@ -72,12 +78,46 @@ public class Player {
         return "Du legst ab: " + name;
     }
 
-    public String showInventory() {
-        return inventory.toString();
+    public String getStatusString() {
+        Weapon equippedWeapon = damage.getEquippedWeapon();
+        String base = health.toString() + " | Chakra: " + damage.getChakra();
+        String weaponName = (equippedWeapon == null) ? "keine" : equippedWeapon.getName();
+        return base
+                + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity()
+                + " | Waffe: " + weaponName
+                + " | Schaden: " + damage.getDamage();
     }
 
-    public String getStatusString() {
-        return status.toString() + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity();
+    public String usePotion(String name) {
+        Optional<Item> optionalItem = inventory.findByName(name);
+        if (optionalItem.isEmpty() || !(optionalItem.get() instanceof Potion)) {
+            return "Du hast keinen passenden Trank im Inventar.";
+        }
+        Item item = optionalItem.get();
+        if (item instanceof HealingPotion) {
+            if (health.getCurrentHp() >= health.getMaxHp()) {
+                return "Du bist nicht verletzt.";
+            }
+        }
+        if (item instanceof HealingPotion) {
+            health.heal(((HealingPotion) item).heal());
+        }
+        if (item instanceof ChakraPotion) {
+            damage.restoreChakra(((ChakraPotion) item).chakraPowerUp());
+        }
+        inventory.removeByName(name);
+        String statusNow = health.toString() + " | Chakra: " + damage.getChakra();
+        return "Du verwendest: " + name + " | " + statusNow;
+    }
+
+    public String equipWeapon(String name) {
+        Optional<Item> optionalItem = inventory.findByName(name);
+        if (optionalItem.isEmpty() || !(optionalItem.get() instanceof Weapon)) {
+            return "Diese Waffe hast du nicht im Inventar.";
+        }
+        Weapon weapon = (Weapon) optionalItem.get();
+        damage.equip(weapon);
+        return "Du rüstest aus: " + weapon.getName() + " | Schaden: " + damage.getDamage();
     }
 }
 
