@@ -1,8 +1,8 @@
-package org.example;
+package org.example.Item.Potion.Chakra;
 
-public class SmallChakraElixir implements ChakraPotion {
-    private final String name = "Kleines-Chakra-Elixier";
-    private final int chakra = 20;
+public class LargeChakraElixir implements ChakraPotion {
+    private final String name = "Grosses-Weisen-Chakra-Elixier";
+    private final int chakra = 50;
 
     @Override
     public String getName() { return name; }

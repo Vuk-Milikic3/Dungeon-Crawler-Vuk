@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Room;
 
 public enum Direction {
     NORTH("(w) Norden"),

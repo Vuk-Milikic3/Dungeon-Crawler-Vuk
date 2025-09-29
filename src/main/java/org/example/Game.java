@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Player.Player;
+import org.example.Room.Direction;
+import org.example.Room.RoomConnections;
+
 import java.util.Scanner;
 
 public class Game {

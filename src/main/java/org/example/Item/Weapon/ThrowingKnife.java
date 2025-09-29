@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Item.Weapon;
 
 public class ThrowingKnife implements Weapon {
     private final String name;

@@ -1,5 +1,11 @@
-package org.example;
+package org.example.Player;
 
+import org.example.Item.Potion.Potion;
+import org.example.Item.Potion.Heal.SmallHealingPotion;
+import org.example.Item.Weapon.Sword;
+import org.example.Item.Weapon.Weapon;
+import org.example.Room.Direction;
+import org.example.Room.Room;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
