@@ -1,5 +1,8 @@
 package org.example;
 
+import SmallChakraElixir;
+import org.example.Item.Potion.Heal.SmallHealingPotion;
+import org.example.Item.Weapon.Sword;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

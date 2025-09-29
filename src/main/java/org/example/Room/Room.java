@@ -1,4 +1,8 @@
-package org.example;
+package org.example.Room;
+
+import org.example.Item.Item;
+import org.example.Item.Potion.Potion;
+import org.example.Item.Weapon.Weapon;
 
 import java.util.*;
 

@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Player;
+
+import org.example.Item.Weapon.Weapon;
 
 public class PlayerDamage {
     private final int baseDamage;

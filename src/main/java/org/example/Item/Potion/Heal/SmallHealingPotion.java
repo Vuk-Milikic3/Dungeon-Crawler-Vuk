@@ -1,8 +1,8 @@
-package org.example;
+package org.example.Item.Potion.Heal;
 
-public class LargeHealingPotion implements HealingPotion {
-    private final String name = "Grosser-Weisen-Heiltrank";
-    private final int healing = 60;
+public class SmallHealingPotion implements HealingPotion {
+    private final String name = "Kleiner-Kyubi-Heiltrank";
+    private final int healing = 25;
 
     @Override
     public String getName() { return name; }

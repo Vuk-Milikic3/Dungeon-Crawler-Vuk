@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Player;
 
 public class PlayerHealth {
     private int currentHp;

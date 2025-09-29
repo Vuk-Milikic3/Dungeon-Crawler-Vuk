@@ -1,4 +1,11 @@
-package org.example;
+package org.example.Room;
+
+import org.example.Item.Potion.Chakra.LargeChakraElixir;
+import org.example.Item.Potion.Chakra.SmallChakraElixir;
+import org.example.Item.Potion.Heal.LargeHealingPotion;
+import org.example.Item.Potion.Heal.SmallHealingPotion;
+import org.example.Item.Weapon.Sword;
+import org.example.Item.Weapon.ThrowingKnife;
 
 public class RoomConnections {
     private final Room kerker;

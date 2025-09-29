@@ -1,5 +1,7 @@
-package org.example;
+package org.example.Player;
 
+import org.example.Item.Weapon.Sword;
+import org.example.Item.Weapon.Weapon;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,4 +1,11 @@
-package org.example;
+package org.example.Player;
+
+import org.example.*;
+import org.example.Item.Item;
+import org.example.Item.Potion.Potion;
+import org.example.Item.Weapon.Weapon;
+import org.example.Room.Direction;
+import org.example.Room.Room;
 
 import java.util.Optional;
 
