@@ -7,17 +7,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PlayerHealthTest {
 
     @Test
-    void heal_should_not_exceed_max_hp() {
-        PlayerHealth hp = new PlayerHealth(90, 100);
-        hp.heal(50);
-        assertEquals(100, hp.getCurrentHp());
+    void heal_should__not_go_over_max__when_amount_is_too_big() {
+        PlayerHealth playerHealth = new PlayerHealth(90, 100);
+        playerHealth.heal(50);
+        assertEquals(100, playerHealth.getCurrentHp());
     }
 
     @Test
-    void heal_with_non_positive_value_should_do_nothing() {
-        PlayerHealth hp = new PlayerHealth(90, 100);
-        hp.heal(0);
-        assertEquals(90, hp.getCurrentHp());
+    void heal_should__do_nothing__when_amount_is_non_positive() {
+        PlayerHealth playerHealth = new PlayerHealth(90, 100);
+        playerHealth.heal(0);
+        assertEquals(90, playerHealth.getCurrentHp());
+    }
+
+    @Test
+    void heal_should__increase_health__when_amount_is_positive() {
+        PlayerHealth playerHealth = new PlayerHealth(60, 100);
+        playerHealth.heal(25);
+        assertEquals(85, playerHealth.getCurrentHp());
     }
 }
 

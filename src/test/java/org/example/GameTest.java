@@ -21,7 +21,7 @@ public class GameTest {
     void status_command_should_return_formatted_stats() {
         Game game = new Game();
         String result = game.processCommand("status");
-        assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 0/8", result);
+        assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 0/8 | Waffe: keine | Schaden: 10" , result);
     }
 
     @Test

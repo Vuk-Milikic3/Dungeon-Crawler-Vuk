@@ -44,15 +44,15 @@ public class Player {
         if (inventory.isFull()) {
             return "Dein Inventar ist voll.";
         }
-        Optional<Potion> p = currentRoom.removePotionByName(name);
-        if (p.isPresent()) {
-            Potion potion = p.get();
+        Optional<Potion> optionalPotion = currentRoom.removePotionByName(name);
+        if (optionalPotion.isPresent()) {
+            Potion potion = optionalPotion.get();
             inventory.add(potion);
             return "Du nimmst: " + potion.getName();
         }
-        Optional<Weapon> w = currentRoom.removeWeaponByName(name);
-        if (w.isPresent()) {
-            Weapon weapon = w.get();
+        Optional<Weapon> optionalWeapon = currentRoom.removeWeaponByName(name);
+        if (optionalWeapon.isPresent()) {
+            Weapon weapon = optionalWeapon.get();
             inventory.add(weapon);
             return "Du nimmst: " + weapon.getName();
         }
@@ -79,22 +79,22 @@ public class Player {
     }
 
     public String getStatusString() {
-        Weapon w = damage.getEquippedWeapon();
+        Weapon equippedWeapon = damage.getEquippedWeapon();
         String base = health.toString() + " | Chakra: " + damage.getChakra();
-        String weaponName = (w == null) ? "keine" : w.getName();
+        String weaponName = (equippedWeapon == null) ? "keine" : equippedWeapon.getName();
         return base
                 + " | Inventar: " + inventory.spaceUsed() + "/" + inventory.capacity()
                 + " | Waffe: " + weaponName
-                + " | Schaden: " + damage.getAttack();
+                + " | Schaden: " + damage.getDamage();
     }
 
     public String usePotion(String name) {
-        Optional<Item> found = inventory.findByName(name);
-        if (found.isEmpty() || !(found.get() instanceof Potion)) {
+        Optional<Item> optionalItem = inventory.findByName(name);
+        if (optionalItem.isEmpty() || !(optionalItem.get() instanceof Potion)) {
             return "Du hast keinen passenden Trank im Inventar.";
         }
-        Item item = found.get();
-        if (item instanceof HealingPotion && !(item instanceof ChakraPotion)) {
+        Item item = optionalItem.get();
+        if (item instanceof HealingPotion) {
             if (health.getCurrentHp() >= health.getMaxHp()) {
                 return "Du bist nicht verletzt.";
             }
@@ -111,13 +111,13 @@ public class Player {
     }
 
     public String equipWeapon(String name) {
-        Optional<Item> found = inventory.findByName(name);
-        if (found.isEmpty() || !(found.get() instanceof Weapon)) {
+        Optional<Item> optionalItem = inventory.findByName(name);
+        if (optionalItem.isEmpty() || !(optionalItem.get() instanceof Weapon)) {
             return "Diese Waffe hast du nicht im Inventar.";
         }
-        Weapon w = (Weapon) found.get();
-        damage.equip(w);
-        return "Du rüstest aus: " + w.getName();
+        Weapon weapon = (Weapon) optionalItem.get();
+        damage.equip(weapon);
+        return "Du rüstest aus: " + weapon.getName() + " | Schaden: " + damage.getDamage();
     }
 }
 

@@ -7,26 +7,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PlayerDamageTest {
 
     @Test
-    void base_attack_without_weapon_is_baseDamage() {
+    void getDamage_should_return_baseDamage__when_no_weapon_equipped() {
         PlayerDamage dmg = new PlayerDamage(10, 5);
-        assertEquals(10, dmg.getAttack());
+        assertEquals(10, dmg.getDamage());
     }
 
     @Test
-    void attack_with_weapon_adds_weapon_damage() {
-        PlayerDamage dmg = new PlayerDamage(10, 5);
-        Weapon w = new Sword("Katana", 16);
-        dmg.equip(w);
-        assertEquals(26, dmg.getAttack());
+    void getDamage_should_include_weaponDamage__when_weapon_equipped() {
+        PlayerDamage playerDamage = new PlayerDamage(10, 5);
+        Weapon weapon = new Sword("Katana", 16);
+        playerDamage.equip(weapon);
+        assertEquals(26, playerDamage.getDamage());
     }
 
     @Test
-    void chakra_increases_unbounded() {
-        PlayerDamage dmg = new PlayerDamage(10, 10);
-        dmg.restoreChakra(50);
-        assertEquals(60, dmg.getChakra());
-        dmg.restoreChakra(50);
-        assertEquals(110, dmg.getChakra());
+    void restoreChakra_should_accumulate_without_limit__when_multiple_elixirs_used() {
+        PlayerDamage playerDamage = new PlayerDamage(10, 10);
+        playerDamage.restoreChakra(50);
+        assertEquals(60, playerDamage.getChakra());
+        playerDamage.restoreChakra(50);
+        assertEquals(110, playerDamage.getChakra());
     }
 }
 

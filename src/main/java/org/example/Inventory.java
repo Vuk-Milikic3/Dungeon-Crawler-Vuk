@@ -42,10 +42,11 @@ public class Inventory {
     }
 
     public Optional<Item> removeByName(String name) {
-        if (name == null) return Optional.empty();
-        String key = name.toLowerCase();
-        Item removed = itemsByName.remove(key);
-        return Optional.ofNullable(removed);
+        return findByName(name).map(item -> {
+            String key = item.getName() == null ? "" : item.getName().toLowerCase();
+            itemsByName.remove(key);
+            return item;
+        });
     }
 
     public Optional<Item> findByName(String name) {

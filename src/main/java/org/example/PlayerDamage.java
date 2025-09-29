@@ -10,7 +10,7 @@ public class PlayerDamage {
         this.chakra = chakra;
     }
 
-    public int getAttack() {
+    public int getDamage() {
         int bonus = equippedWeapon == null ? 0 : equippedWeapon.damage();
         return baseDamage + bonus;
     }
@@ -24,5 +24,10 @@ public class PlayerDamage {
     public void restoreChakra(int amount) {
         if (amount <= 0) return;
         chakra = chakra + amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Chakra: " + chakra + " | Schaden: " + getDamage();
     }
 }
