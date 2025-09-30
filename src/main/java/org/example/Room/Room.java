@@ -51,6 +51,21 @@ public class Room {
         enemiesByName.put(key, enemy);
     }
 
+    public Optional<Enemy> getEnemyByName(String name) {
+        if (name == null) return Optional.empty();
+        return Optional.ofNullable(enemiesByName.get(name.toLowerCase()));
+    }
+
+    public void removeEnemy(Enemy enemy) {
+        if (enemy == null) return;
+        String key = enemy.getName() == null ? "" : enemy.getName().toLowerCase();
+        enemiesByName.remove(key);
+    }
+
+    public boolean hasEnemies() {
+        return !enemiesByName.isEmpty();
+    }
+
 
     public Optional<Potion> removePotionByName(String name) {
         if (name == null) {

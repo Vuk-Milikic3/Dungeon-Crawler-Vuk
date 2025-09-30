@@ -20,6 +20,8 @@ public class Game {
     private static final String COMMAND_SOUTH = "s";
     private static final String COMMAND_EAST = "d";
     private static final String COMMAND_QUIT = "quit";
+    private static final String COMMAND_ATTACK = "angreife";
+    private static final String COMMAND_FLEE = "fliehen";
     private boolean isStarted = false;
     private final Scanner scanner = new Scanner(System.in);
     private final RoomConnections world = new RoomConnections();
@@ -64,6 +66,17 @@ public class Game {
         }
         String normalized = command.trim().toLowerCase();
         String[] parts = command.split(" ");
+        
+        if (player.isInBattle()) {
+            if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_ATTACK)) {
+                return player.attackEnemy(parts[1].trim());
+            }
+            if (normalized.equals(COMMAND_FLEE)) {
+                return player.flee();
+            }
+            return "Im Kampf kannst du nur 'angreife <gegner>' oder 'fliehen' verwenden.";
+        }
+        
         if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_TAKE)) {
             return player.takeItem(parts[1].trim());
         }
@@ -104,6 +117,23 @@ public class Game {
                 System.out.println("Falscher Befehl eingegeben. Bitte gib einen gültigen Befehl ein.");
             } else if (!response.isEmpty()) {
                 System.out.println(response+"\n");
+            }
+            
+            if (player.currentRoomHasEnemies() && !player.isInBattle()) {
+                System.out.println("In diesem Raum ist ein Gegner! Möchtest du gegen ihn kämpfen, damit du neue Schätze finden kannst im Raum? (y/n):");
+                String battleResponse = "";
+                if (scanner.hasNextLine()) {
+                    battleResponse = scanner.nextLine().trim().toLowerCase();
+                }
+                if (battleResponse.equals("y")) {
+                    player.startBattle();
+                    System.out.println("Der Kampf beginnt!\n");
+                } else if (battleResponse.equals("n")) {
+                    String result = player.declineBattle();
+                    System.out.println(result+"\n");
+                } else {
+                    System.out.println("Bitte antworte mit y oder n.\n");
+                }
             }
         }
     }
