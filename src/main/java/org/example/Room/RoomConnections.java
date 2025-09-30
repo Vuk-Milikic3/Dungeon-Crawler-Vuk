@@ -1,5 +1,7 @@
 package org.example.Room;
 
+import org.example.Enemy.BasicEnemy;
+import org.example.Enemy.EliteEnemy;
 import org.example.Item.Potion.Chakra.LargeChakraElixir;
 import org.example.Item.Potion.Chakra.SmallChakraElixir;
 import org.example.Item.Potion.Heal.LargeHealingPotion;
@@ -33,6 +35,8 @@ public class RoomConnections {
         waffenkammer.addWeapon(new ThrowingKnife("Shuriken-(6)", 7));
         bibliothek.addWeapon(new Sword("Katana", 16));
 
+        waffenkammer.addEnemy(new BasicEnemy("Hidden-Sand-Ninja", 80, 12));
+        bibliothek.addEnemy(new EliteEnemy("Obito-Uchiha", 120, 20));
     }
 
     public Room getStartRoom() {
