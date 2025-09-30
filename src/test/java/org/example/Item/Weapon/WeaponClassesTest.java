@@ -1,8 +1,6 @@
-package org.example.Item;
+package org.example.Item.Weapon;
 
-import org.example.Item.Weapon.Sword;
 import ThrowingKnife;
-import org.example.Item.Weapon.Weapon;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

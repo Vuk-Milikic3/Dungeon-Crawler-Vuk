@@ -1,4 +1,4 @@
-package org.example.Item;
+package org.example.Item.Potion;
 
 import LargeChakraElixir;
 import LargeHealingPotion;
