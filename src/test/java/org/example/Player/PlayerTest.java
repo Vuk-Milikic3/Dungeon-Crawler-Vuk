@@ -1,5 +1,7 @@
 package org.example.Player;
 
+import org.example.Item.Potion.Chakra.LargeChakraElixir;
+import org.example.Item.Potion.Heal.LargeHealingPotion;
 import org.example.Item.Potion.Potion;
 import org.example.Item.Potion.Heal.SmallHealingPotion;
 import org.example.Item.Weapon.Sword;

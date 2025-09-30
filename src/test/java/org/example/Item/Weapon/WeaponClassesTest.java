@@ -1,6 +1,6 @@
 package org.example.Item.Weapon;
 
-import ThrowingKnife;
+import org.example.Item.Weapon.ThrowingKnife;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
