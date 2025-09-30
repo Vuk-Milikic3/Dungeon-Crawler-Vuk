@@ -22,6 +22,7 @@ public class Game {
     private static final String COMMAND_QUIT = "quit";
     private static final String COMMAND_ATTACK = "angreife";
     private static final String COMMAND_FLEE = "fliehen";
+    private static final String COMMAND_HELP = "hilfe";
     private boolean isStarted = false;
     private final Scanner scanner = new Scanner(System.in);
     private final RoomConnections world = new RoomConnections();
@@ -97,6 +98,10 @@ public class Game {
             case COMMAND_WEST -> player.move(Direction.WEST);
             case COMMAND_SOUTH -> player.move(Direction.SOUTH);
             case COMMAND_EAST -> player.move(Direction.EAST);
+            case COMMAND_HELP -> {
+                showCommandHelp();
+                yield "";
+            }
             case COMMAND_QUIT -> {
                 isStarted = false;
                 yield "Spiel beendet. Auf Wiedersehen!";
@@ -105,9 +110,55 @@ public class Game {
         };
     }
 
+    private void showCommandHelp() {
+        System.out.println("=== BEFEHLE ===");
+        System.out.println();
+        System.out.println("Bewegung:");
+        System.out.println("  w - Gehe nach Norden");
+        System.out.println("  a - Gehe nach Westen");
+        System.out.println("  s - Gehe nach Süden");
+        System.out.println("  d - Gehe nach Osten");
+        System.out.println();
+        System.out.println("Information:");
+        System.out.println("  status - Zeige deinen Status");
+        System.out.println("  schauen - Schaue dich im Raum um");
+        System.out.println("  inventar - Zeige dein Inventar");
+        System.out.println();
+        System.out.println("Gegenstände:");
+        System.out.println("  nimm <gegenstand> - Nimm einen Gegenstand auf");
+        System.out.println("  lege <gegenstand> - Lege einen Gegenstand ab");
+        System.out.println("  nutze <trank> - Verwende einen Trank");
+        System.out.println("  rüste <waffe> aus - Rüste eine Waffe aus");
+        System.out.println();
+        System.out.println("Kampf:");
+        System.out.println("  angreife <gegner> - Greife einen Gegner an");
+        System.out.println("  fliehen - Fliehe aus dem Kampf");
+        System.out.println();
+        System.out.println("Sonstiges:");
+        System.out.println("  quit - Spiel beenden");
+        System.out.println("  hilfe - Zeige die Befehle an");
+        System.out.println();
+    }
+
     private void awaitFirstCommand() {
+        boolean helpShown = false;
+        
+        while (isStarted && !helpShown) {
+            System.out.print("Gib deinen ersten Befehl ein (Tipp: 'hilfe'): ");
+            String input = "";
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine();
+            }
+            if (input.trim().equalsIgnoreCase(COMMAND_HELP)) {
+                showCommandHelp();
+                helpShown = true;
+            } else {
+                System.out.println("Bitte gib den Befehl 'hilfe' ein.\n");
+            }
+        }
+        
         while (isStarted) {
-            System.out.print("Gib deinen ersten Befehl ein (Tipp: 'status' oder 'schauen'): ");
+            System.out.print("Gib deinen Befehl ein: ");
             String input = "";
             if (scanner.hasNextLine()) {
                 input = scanner.nextLine();
