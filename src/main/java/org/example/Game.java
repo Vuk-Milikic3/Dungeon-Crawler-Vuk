@@ -1,9 +1,11 @@
 package org.example;
 
+import org.example.Enemy.Enemy;
 import org.example.Player.Player;
 import org.example.Room.Direction;
 import org.example.Room.RoomConnections;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -69,13 +71,13 @@ public class Game {
         String[] parts = command.split(" ");
         
         if (player.isInBattle()) {
-            if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_ATTACK)) {
-                return player.attackEnemy(parts[1].trim());
+            if (normalized.equals(COMMAND_ATTACK)) {
+                return player.attackEnemy();
             }
             if (normalized.equals(COMMAND_FLEE)) {
                 return player.flee();
             }
-            return "Im Kampf kannst du nur 'angreife <gegner>' oder 'fliehen' verwenden.";
+            return "Im Kampf kannst du nur 'angreife' oder 'fliehen' verwenden.";
         }
         
         if (parts.length == 2 && parts[0].equalsIgnoreCase(COMMAND_TAKE)) {
@@ -131,7 +133,7 @@ public class Game {
         System.out.println("  rüste <waffe> aus - Rüste eine Waffe aus");
         System.out.println();
         System.out.println("Kampf:");
-        System.out.println("  angreife <gegner> - Greife einen Gegner an");
+        System.out.println("  angreife - Greife den gewählten Gegner an");
         System.out.println("  fliehen - Fliehe aus dem Kampf");
         System.out.println();
         System.out.println("Sonstiges:");
@@ -158,7 +160,11 @@ public class Game {
         }
         
         while (isStarted) {
-            System.out.print("Gib deinen Befehl ein: ");
+            if (player.isInBattle()) {
+                System.out.print("Gib deinen Kampf Befehl ein: ");
+            } else {
+                System.out.print("Gib deinen Befehl ein: ");
+            }
             String input = "";
             if (scanner.hasNextLine()) {
                 input = scanner.nextLine();
@@ -171,19 +177,54 @@ public class Game {
             }
             
             if (player.currentRoomHasEnemies() && !player.isInBattle()) {
-                System.out.println("In diesem Raum ist ein Gegner! Möchtest du gegen ihn kämpfen, damit du neue Schätze finden kannst im Raum? (y/n):");
-                String battleResponse = "";
-                if (scanner.hasNextLine()) {
-                    battleResponse = scanner.nextLine().trim().toLowerCase();
-                }
-                if (battleResponse.equals("y")) {
-                    player.startBattle();
-                    System.out.println("Der Kampf beginnt!\n");
-                } else if (battleResponse.equals("n")) {
-                    String result = player.declineBattle();
-                    System.out.println(result+"\n");
-                } else {
-                    System.out.println("Bitte antworte mit y oder n.\n");
+                Boolean fightDecision = true;
+                while (fightDecision) {
+                    System.out.println("In diesem Raum ist ein Gegner! Möchtest du gegen ihn kämpfen, damit du neue Schätze finden kannst im Raum? (y/n):");
+                    String battleResponse = "";
+                    if (scanner.hasNextLine()) {
+                        battleResponse = scanner.nextLine().trim().toLowerCase();
+                    }
+                    if (battleResponse.equals("y")) {
+                        fightDecision = false;
+                        Boolean choseEnemy = true;
+                        while (choseEnemy) {
+                        System.out.println("\nWähle deinen Gegner:");
+                        List<Enemy> enemies = player.getCurrentRoom().getAllEnemies();
+                        List<Enemy> aliveEnemies = new ArrayList<>();
+                        for (Enemy enemy : enemies) {
+                            if (enemy.isAlive()) {
+                                aliveEnemies.add(enemy);
+                            }
+                        }
+                        for (int i = 0; i < aliveEnemies.size(); i++) {
+                            System.out.println((i + 1) + ". " + aliveEnemies.get(i).getName() + " (" + aliveEnemies.get(i).getCurrentHealth() + "/" + aliveEnemies.get(i).getMaxHealth() + " HP)");
+                        }
+                            System.out.print("Deine Wahl (Nummer): ");
+                            String choice = "";
+                            if (scanner.hasNextLine()) {
+                                choice = scanner.nextLine().trim();
+                            }
+                            try {
+                                int index = Integer.parseInt(choice) - 1;
+                                if (index >= 0 && index < aliveEnemies.size()) {
+                                    player.chooseEnemy(aliveEnemies.get(index).getName());
+                                    player.startBattle();
+                                    System.out.println("Der Kampf gegen " + aliveEnemies.get(index).getName() + " beginnt!\n");
+                                    choseEnemy = false;
+                                } else {
+                                    System.out.println("Ungültige Wahl.\n");
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Bitte gib eine Nummer ein.\n");
+                            }
+                        }
+                    } else if (battleResponse.equals("n")) {
+                        fightDecision = false;
+                        String result = player.declineBattle();
+                        System.out.println(result + "\n");
+                    } else {
+                        System.out.println("Bitte antworte mit y oder n.\n");
+                    }
                 }
             }
         }

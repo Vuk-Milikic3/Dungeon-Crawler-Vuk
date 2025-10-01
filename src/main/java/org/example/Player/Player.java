@@ -35,7 +35,19 @@ public class Player {
     }
 
     public boolean currentRoomHasEnemies() {
-        return currentRoom != null && currentRoom.hasEnemies();
+        if (currentRoom == null || !currentRoom.hasEnemies()) {
+            return false;
+        }
+        for (Enemy enemy : currentRoom.getAllEnemies()) {
+            if (enemy.isAlive()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 
     public PlayerHealth getPlayerHealth() {
@@ -160,24 +172,20 @@ public class Player {
 
     public String flee() {
         currentRoom = previousRoom;
+        inBattle = false;
         return "Du fliehst aus dem Kampf zurück!\n" + currentRoom.toString();
     }
 
-    public String attackEnemy(String enemyName) {
-        Optional<Enemy> optionalEnemy = currentRoom.getEnemyByName(enemyName);
-        if (optionalEnemy.isEmpty()) {
-            return "Dieser Gegner ist hier nicht.";
-        }
-        Enemy enemy = optionalEnemy.get();
-        if (currentEnemy == null) {
-            currentEnemy = enemy;
-        }
+    public void chooseEnemy(String enemyName) {
+        currentEnemy = currentRoom.getEnemyByName(enemyName).orElse(null);
+    }
+
+    public String attackEnemy() {
         int playerDamage = damage.getDamage();
-        enemy.takeDamage(playerDamage);
-        String result = "Du greifst " + enemy.getName() + " an und machst " + playerDamage + " Schaden!\n";
-        result += enemy.toString();
-        if (!enemy.isAlive()) {
-            currentRoom.removeEnemy(enemy);
+        currentEnemy.takeDamage(playerDamage);
+        String result = "Du greifst " + currentEnemy.getName() + " an und machst " + playerDamage + " Schaden!\n";
+        result += currentEnemy.toString();
+        if (!currentEnemy.isAlive()) {
             inBattle = false;
             currentEnemy = null;
             result += "\n\nDu konntest den Gegner besiegen!\n" + currentRoom.toString();

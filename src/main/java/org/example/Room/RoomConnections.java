@@ -35,7 +35,8 @@ public class RoomConnections {
         waffenkammer.addWeapon(new ThrowingKnife("Shuriken-(6)", 7));
         bibliothek.addWeapon(new Sword("Katana", 16));
 
-        waffenkammer.addEnemy(new BasicEnemy("Hidden-Sand-Ninja", 80, 12));
+        waffenkammer.addEnemy(new BasicEnemy("Hidden-Sand-Ninja", 60, 12));
+        waffenkammer.addEnemy(new BasicEnemy("Hidden-Mist-Ninja", 60, 12));
         bibliothek.addEnemy(new EliteEnemy("Obito-Uchiha", 120, 20));
     }
 

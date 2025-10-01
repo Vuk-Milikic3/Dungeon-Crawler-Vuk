@@ -50,20 +50,16 @@ public class Room {
         String key = enemy.getName() == null ? "" : enemy.getName().toLowerCase();
         enemiesByName.put(key, enemy);
     }
-
     public Optional<Enemy> getEnemyByName(String name) {
         if (name == null) return Optional.empty();
         return Optional.ofNullable(enemiesByName.get(name.toLowerCase()));
     }
-
-    public void removeEnemy(Enemy enemy) {
-        if (enemy == null) return;
-        String key = enemy.getName() == null ? "" : enemy.getName().toLowerCase();
-        enemiesByName.remove(key);
-    }
-
     public boolean hasEnemies() {
         return !enemiesByName.isEmpty();
+    }
+
+    public List<Enemy> getAllEnemies() {
+        return new ArrayList<>(enemiesByName.values());
     }
 
 
@@ -126,7 +122,11 @@ public class Room {
         }
         List<String> enemyNames = new ArrayList<>();
         for (Enemy enemy : enemiesByName.values()) {
-            enemyNames.add(enemy.getName());
+            if (!enemy.isAlive()) {
+                enemyNames.add(enemy.getName() + " (besiegt)");
+            } else {
+                enemyNames.add(enemy.getName());
+            }
         }
         if (!enemyNames.isEmpty()) {
             sb.append("\n");
