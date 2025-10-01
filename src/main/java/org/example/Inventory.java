@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Item.Item;
+import org.example.Item.Weapon.Weapon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -67,7 +68,12 @@ public class Inventory {
             sb.append("Leer");
         } else {
             for (Item item : itemsByName.values()) {
-                sb.append(item.toString()).append("\n");
+                if (item instanceof Weapon) {
+                    Weapon weapon = (Weapon) item;
+                    sb.append(item.toString()).append(" (Schaden: ").append(weapon.damage()).append(")\n");
+                } else {
+                    sb.append(item.toString()).append("\n");
+                }
             }
         }
         return sb.toString();

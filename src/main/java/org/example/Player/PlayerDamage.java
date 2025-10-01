@@ -13,8 +13,9 @@ public class PlayerDamage {
     }
 
     public int getDamage() {
-        int bonus = equippedWeapon == null ? 0 : equippedWeapon.damage();
-        return baseDamage + bonus;
+        int weaponBonus = equippedWeapon == null ? 0 : equippedWeapon.damage();
+        int chakraBonus = (chakra / 10) * 2;
+        return baseDamage + weaponBonus + chakraBonus;
     }
 
     public Weapon getEquippedWeapon() { return equippedWeapon; }
