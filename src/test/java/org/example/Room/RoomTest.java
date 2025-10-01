@@ -1,5 +1,7 @@
 package org.example.Room;
 
+import org.example.Enemy.BasicEnemy;
+import org.example.Enemy.Enemy;
 import org.example.Item.Potion.Potion;
 import org.example.Item.Potion.Heal.SmallHealingPotion;
 import org.example.Item.Weapon.Sword;
@@ -8,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoomTest {
 
@@ -51,11 +53,57 @@ public class RoomTest {
         assertTrue(out.isPresent());
         assertTrue(r.removePotionByName(p.getName()).isEmpty());
 
-        Weapon w = new Sword("Katana", 16);
-        r.addWeapon(w);
-        var outW = r.removeWeaponByName(w.getName());
-        assertTrue(outW.isPresent());
-        assertTrue(r.removeWeaponByName(w.getName()).isEmpty());
+        Weapon weapon = new Sword("Katana", 16);
+        r.addWeapon(weapon);
+        var outWeapon = r.removeWeaponByName(weapon.getName());
+        assertTrue(outWeapon.isPresent());
+        assertTrue(r.removeWeaponByName(weapon.getName()).isEmpty());
+    }
+
+    @Test
+    void addEnemy_should_add_enemy_to_room() {
+        Room room = new Room("Test", "");
+        Enemy enemy = new BasicEnemy("Ninja", 80, 12);
+        room.addEnemy(enemy);
+        assertTrue(room.hasEnemies());
+    }
+
+    @Test
+    void getEnemyByName_should_return_enemy_when_exists() {
+        Room room = new Room("Test", "");
+        Enemy enemy = new BasicEnemy("Ninja", 80, 12);
+        room.addEnemy(enemy);
+        var result = room.getEnemyByName("Ninja");
+        assertTrue(result.isPresent());
+        assertEquals("Ninja", result.get().getName());
+    }
+
+    @Test
+    void getEnemyByName_should_return_empty_when_not_exists() {
+        Room room = new Room("Test", "");
+        var result = room.getEnemyByName("Ninja");
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getAllEnemies_should_return_all_enemies() {
+        Room room = new Room("Test", "");
+        Enemy enemy1 = new BasicEnemy("Ninja1", 80, 12);
+        Enemy enemy2 = new BasicEnemy("Ninja2", 90, 15);
+        room.addEnemy(enemy1);
+        room.addEnemy(enemy2);
+        var enemies = room.getAllEnemies();
+        assertEquals(2, enemies.size());
+    }
+
+    @Test
+    void toString_should_show_defeated_enemies() {
+        Room room = new Room("Test", "");
+        Enemy enemy = new BasicEnemy("Ninja", 50, 10);
+        room.addEnemy(enemy);
+        enemy.takeDamage(50);
+        String result = room.toString();
+        assertTrue(result.contains("Ninja (besiegt)"));
     }
 }
 

@@ -1,5 +1,7 @@
 package org.example.Player;
 
+import org.example.Enemy.BasicEnemy;
+import org.example.Enemy.Enemy;
 import org.example.Item.Potion.Chakra.LargeChakraElixir;
 import org.example.Item.Potion.Heal.LargeHealingPotion;
 import org.example.Item.Potion.Potion;
@@ -10,8 +12,7 @@ import org.example.Room.Direction;
 import org.example.Room.Room;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
 
@@ -55,7 +56,7 @@ public class PlayerTest {
 
         String out = player.takeItem(potion.getName());
         assertTrue(out.toLowerCase().contains("du nimmst"));
-        assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 1/8 | Waffe: keine | Schaden: 10", player.getStatusString());
+        assertEquals("HP: 100/100 | Chakra: 10 | Inventar: 1/8 | Waffe: keine | Schaden: 12", player.getStatusString());
         assertEquals("Das gibt es hier nicht.", player.takeItem(potion.getName()));
 
         Weapon weapon = new Sword("Katana", 16);
@@ -116,7 +117,79 @@ public class PlayerTest {
         assertTrue(resp.contains("Du rüstest aus:"));
         String status = player.getStatusString();
         assertTrue(status.contains("Waffe: Katana"));
-        assertTrue(status.contains("Schaden: 26"));
+        assertTrue(status.contains("Schaden: 28"));
+    }
+
+    @Test
+    void chooseEnemy_should_set_current_enemy() {
+        Room room = new Room("R", "");
+        Enemy enemy = new BasicEnemy("Ninja", 80, 12);
+        room.addEnemy(enemy);
+        Player player = new Player(room);
+        
+        player.chooseEnemy("Ninja");
+        player.startBattle();
+        assertTrue(player.isInBattle());
+    }
+
+    @Test
+    void attackEnemy_should_damage_enemy_when_in_battle() {
+        Room room = new Room("R", "");
+        Enemy enemy = new BasicEnemy("Ninja", 50, 12);
+        room.addEnemy(enemy);
+        Player player = new Player(room);
+        player.chooseEnemy("Ninja");
+        player.startBattle();
+        
+        String result = player.attackEnemy();
+        assertTrue(result.contains("Du greifst"));
+        assertTrue(result.contains("Ninja"));
+        assertEquals(38, enemy.getCurrentHealth());
+    }
+
+    @Test
+    void attackEnemy_should_end_battle_when_enemy_defeated() {
+        Room room = new Room("R", "");
+        Enemy enemy = new BasicEnemy("Ninja", 10, 5);
+        room.addEnemy(enemy);
+        Player player = new Player(room);
+        player.chooseEnemy("Ninja");
+        player.startBattle();
+        
+        String result = player.attackEnemy();
+        assertTrue(result.contains("besiegen"));
+        assertFalse(player.isInBattle());
+        assertFalse(enemy.isAlive());
+    }
+
+    @Test
+    void flee_should_end_battle_and_return_to_previous_room() {
+        Room room1 = new Room("Room1", "");
+        Room room2 = new Room("Room2", "");
+        room1.connect(Direction.NORTH, room2);
+        Enemy enemy = new BasicEnemy("Ninja", 80, 12);
+        room2.addEnemy(enemy);
+        Player player = new Player(room1);
+        
+        player.move(Direction.NORTH);
+        player.chooseEnemy("Ninja");
+        player.startBattle();
+        
+        String result = player.flee();
+        assertTrue(result.contains("fliehst"));
+        assertFalse(player.isInBattle());
+        assertEquals("Room1", player.getCurrentRoom().toString().split("\n")[0].replace("Raum: ", ""));
+    }
+
+    @Test
+    void currentRoomHasEnemies_should_return_false_when_all_defeated() {
+        Room room = new Room("R", "");
+        Enemy enemy = new BasicEnemy("Ninja", 10, 5);
+        room.addEnemy(enemy);
+        Player player = new Player(room);
+        
+        enemy.takeDamage(10);
+        assertFalse(player.currentRoomHasEnemies());
     }
 }
 
