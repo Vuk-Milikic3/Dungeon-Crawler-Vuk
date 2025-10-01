@@ -1,10 +1,15 @@
-package org.example.Item;
+package org.example.Item.Potion;
 
-import LargeChakraElixir;
-import LargeHealingPotion;
-import SmallChakraElixir;
+import org.example.Item.Potion.Chakra.LargeChakraElixir;
+import org.example.Item.Potion.Heal.LargeHealingPotion;
+import org.example.Item.Potion.Chakra.SmallChakraElixir;
+import org.example.Item.Potion.Chakra.ChakraPotion;
+import org.example.Item.Potion.Heal.HealingPotion;
 import org.example.Item.Potion.Heal.SmallHealingPotion;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PotionClassesTest {
 
